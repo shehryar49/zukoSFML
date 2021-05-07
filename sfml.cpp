@@ -162,7 +162,6 @@ PltObject Rect(PltArgs args)
 
 PltObject draw(PltArgs args)
 {
-   // printf("drawing\n");
      if(args.size()!=2)
        return Plt_Err(VALUE_ERROR,"Two arguments needed!");
     if(args[0].type!='c')
@@ -174,14 +173,12 @@ PltObject draw(PltArgs args)
     string type = args[0].s;
     if(type=="sfCircle")
     {
-     // printf("here\n");
       sf::CircleShape* shape = (sf::CircleShape*)args[0].ptr;
       sf::RenderWindow* w  = (sf::RenderWindow*)args[1].ptr;
       w->draw(*shape);
     }
     else if(type=="sfRect")
     {
-     // printf("here\n");
       sf::RectangleShape* shape = (sf::RectangleShape*)args[0].ptr;
       sf::RenderWindow* w  = (sf::RenderWindow*)args[1].ptr;
       w->draw(*shape);
