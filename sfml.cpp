@@ -3,7 +3,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "PltObject.h"
 
-#define PltArgs const vector<PltObject>&
+
 int TypeMistmatch(string pattern,PltArgs args)
 {
   int k = 0;
@@ -14,14 +14,8 @@ int TypeMistmatch(string pattern,PltArgs args)
   }
   return -1;//all good
 }
-PltObject Plt_Err(ErrCode e,string des)
-{
-  PltObject ret;
-  ret.type = 'e';
-  ret.s = des;
-  ret.i = e;
-  return ret;
-}
+
+
 std::unordered_map<void*,string> objects;
 extern "C"
 {
