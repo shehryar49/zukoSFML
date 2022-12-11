@@ -1,362 +1,78 @@
-#define DEBUG
 #ifndef PLTOBJECT_H_
 #define PLTOBJECT_H_
 #include <string>
 #include <vector>
 #include <unordered_map>
 using namespace std;
+
 #define PltList vector<PltObject>
-#define PltArgs const vector<PltObject>&
 #define Dictionary std::unordered_map<PltObject,PltObject,PltObject::HashFunction>
 struct PltObject;
-typedef PltObject(*Method)(PltObject&,const vector<PltObject>&);
-typedef PltObject(*func)(const vector<PltObject>&);
-struct NativeObject;
+
+//
+//Types for different plutonium objects
+#define PLT_LIST 'j'
+#define PLT_DICT 'a'
+#define PLT_INT 'i'
+#define PLT_INT64 'l'
+#define PLT_FLOAT 'f'
+#define PLT_BYTE = 'm'
+#define PLT_NATIVE_FUNC 'y'//native function
+#define PLT_MODULE 'q'
+#define PLT_STR 's'
+#define PLT_FILESTREAM 'u'
+#define PLT_NIL 'n'
+#define PLT_OBJ 'o' //objects created using plutonium code
+#define PLT_CLASS 'v' //Plutonium code class
+#define PLT_BOOL 'b'
+#define PLT_POINTER 'p' //just a pointer that means something only to c++ code,the interpreter just stores it
+#define PLT_FUNC 'w' //plutonium code function
+#define PLT_COROUTINE 'g'
+#define PLT_COROUTINE_OBJ 'z'
 size_t hashList(void*);
 size_t hashDict(void*);
+//
 enum ErrCode
 {
-  SYNTAX_ERROR = 1,
-  TYPE_ERROR = 2,
-  VALUE_ERROR = 3,
-  MATH_ERROR  = 4,
-  NAME_ERROR = 5,
-  INDEX_ERROR = 6,
-  UNKNOWN_ERROR = 7
+  TYPE_ERROR = 1,
+  VALUE_ERROR = 2,
+  MATH_ERROR  = 3,
+  NAME_ERROR = 4,
+  INDEX_ERROR = 5,
+  ARGUMENT_ERROR = 6,
+  UNKNOWN_ERROR = 7,
+  FILEIO_ERROR = 8,
+  KEY_ERROR = 9,
+  OVERFLOW_ERROR = 10,
+  FILE_OPEN_ERROR = 11,
+  FILE_SEEK_ERROR  = 12,
+  IMPORT_ERROR = 13,
+  THROW_ERROR = 14,
+  MAX_RECURSION_ERROR=15,
+  ACCESS_ERROR = 16
 };
 
-
-NativeObject* NewNativeObject(void*);
+struct FileObject
+{
+  FILE* fp;
+  bool open;
+};
 struct PltObject
 {
     union
     {
         void* ptr;
-        float f;
+        double f;
         long long int l;
         int i;
     };
     char type;
-    string s;
-    bool active;//whether the memory pointed by pointer is active or is deleted
+    size_t extra;
     PltObject()
     {
-        ptr = nullptr;
-        active = false;
         type = 'n';
     }
-    PltObject(int x)
-    {
-        type = 'i';
-        i = x;
-        active = false;
-    }
-    PltObject(string x)
-    {
-        type = 's';
-        s = x;
-        active = false;
-    }
-    PltObject(Method e)
-    {
-      ptr = (void*)e;
-      type = 'r';
-      active = false;
-    }
-    PltObject(NativeObject);
-    PltObject(long long int x)
-    {
-        type = 'l';
-        l = x;
-        active = false;
-    }
-    PltObject(FILE* fp)
-    {
-        type = 'u';
-        ptr = (void*)fp;
-        active = true;
-    }
-    PltObject(const PltList& x)
-    {
-        type = 'j';
-        PltList* p = new PltList(x);
-        ptr = (void*)p;
-        active = true;
-    }
-    PltObject(bool x)
-    {
-        type = 'b';
-        i = x;
-        active = false;
-    }
-    PltObject(float x)
-    {
-        type = 'f';
-        f = x;
-        active = false;
-    }
-    PltObject(unsigned char x)
-    {
-        type = 'm';
-        i = x;
-        active = false;
-    }
-    PltObject(const PltObject& other)
-    {
-        type = other.type;
-        if(other.type=='i')
-        {
-           i = other.i;
-           active = false;
-        }
-        else if(other.type=='n')
-        {
-
-        }
-        else if(other.type=='r')
-        {
-          ptr = other.ptr;
-          active = false;
-        }
-        else if(other.type=='f')
-        {
-           f = other.f;
-           active = false;
-        }
-        else if(other.type=='q')
-        {
-          ptr = other.ptr;
-          type = 'q';
-        }
-        else if(other.type=='e')
-        {
-           s = other.s;
-           i = other.i;
-           active = false;
-        }
-        else if(other.type=='b')
-        {
-            i = other.i;
-            active = false;
-        }
-        else if(other.type=='c')
-        {
-                   ptr = (void*)NewNativeObject(other.ptr);
-           type = 'c';
-           active = true;
-        }
-        else if(other.type=='s')
-        {
-           s = other.s;
-           active = false;
-        }
-        else if(other.type=='u')
-        {
-            ptr = other.ptr;
-        }
-        else if(other.type=='m')
-        {
-            i = other.i;
-            active = false;
-        }
-        else if(other.type=='j')
-        {
-          PltList l = *(PltList*)other.ptr;
-          PltList* p = new PltList(l);
-          if(!p)
-          {
-              printf("Unable to allocate memory\n");
-              exit(0);
-          }
-          ptr = (void*)p;
-          active = true;
-        }
-        else if(other.type=='l')
-        {
-            l = other.l;
-            active = false;
-        }
-        else if(other.type=='a')
-        {
-          Dictionary* p = new Dictionary(*(Dictionary*)other.ptr);
-          if(!p)
-          {
-              printf("Unable to allocate memory\n");
-              exit(0);
-          }
-          ptr = (void*)p;
-          active = true;
-        }
-    }
-    void operator=(const PltObject& other)
-    {
-      //   printf("assigning using operator\n");
-        destroy();
-        type = other.type;
-        if(other.type=='i')
-        {
-           i = other.i;
-           active = false;
-        }
-        else if(other.type=='n')
-        {
-
-        }
-        else if(other.type=='r')
-        {
-          ptr = other.ptr;
-          type = 'r';
-          active = false;
-        }
-        else if(other.type=='f')
-        {
-           f = other.f;
-           active = false;
-        }
-        else if(other.type=='e')
-        {
-           s = other.s;
-           i = other.i;
-           active = false;
-        }
-        else if(other.type=='c')
-        {
-           ptr = (void*)NewNativeObject(other.ptr);
-           type = 'c';
-           active = true;
-        }
-        else if(other.type=='q')
-        {
-           ptr = other.ptr;
-           type = 'q';
-        }
-        else if(other.type=='b')
-        {
-            i = other.i;
-            active = false;
-        }
-        else if(other.type=='s')
-        {
-           s = other.s;
-           active = false;
-        }
-        else if(other.type=='u')
-        {
-            ptr = other.ptr;
-        }
-        else if(other.type=='m')
-        {
-           i = other.i;
-           active = false;
-        }
-        else if(other.type=='j')
-        {
-          PltList* p = new PltList(*(PltList*)other.ptr);
-          ptr = (void*)p;
-          active = true;
-        }
-        else if(other.type=='l')
-        {
-            l = other.l;
-            active = false;
-        }
-        else if(other.type=='a')
-        {
-          Dictionary* p = new Dictionary(*(Dictionary*)other.ptr);
-          if(!p)
-          {
-              printf("Unable to allocate memory\n");
-              exit(0);
-          }
-          ptr = (void*)p;
-          active = true;
-        }
-    }
-    void operator=(int x)
-    {
-        destroy();
-        type = 'i';
-        i = x;
-        active = false;
-    }
-    void operator=(Method x)
-    {
-        destroy();
-        type = 'r';
-        ptr = (void*)x;
-        active = false;
-    }
-
-    void operator=(FILE* x)
-    {
-        destroy();
-        type = 'u';
-        ptr = (void*)x;
-        active = true;
-    }
-    void operator=(long long int x)
-    {
-        destroy();
-        type = 'l';
-        l = x;
-        active = false;
-    }
-    void operator=(bool x)
-    {
-        destroy();
-        type = 'b';
-        i = x;
-        active = false;
-    }
-    void operator = (float x)
-    {
-        destroy();
-        type = 'f';
-        f = x;
-        active = false;
-    }
-    void operator = (unsigned char x)
-    {
-        destroy();
-        type = 'm';
-        i = x;
-        active = false;
-    }
-    void operator=(NativeObject);
-    void operator = (string x)
-    {
-        destroy();
-        type = 's';
-        s = x;
-        active = false;
-    }
-    void destroy()
-    {
-
-        if(!active)
-            return;
-        if(type=='j')
-        {
-          PltList* p = (PltList*)ptr;
-          delete p;
-        }
-        else if(type=='a')
-        {
-          Dictionary* p = (Dictionary*)ptr;
-          delete p;
-        }
-        else if(type=='c')
-        {
-          NativeObject* p = (NativeObject*)ptr;
-          delete p;
-        }
-        active = false;
-    }
-    ~PltObject()
-    {
-      if(active)
-        destroy();
-    }
+    
     bool operator==(const PltObject& other)const
     {
         if(other.type!=type)
@@ -387,27 +103,27 @@ struct PltObject
         }
         else if(type=='u')
         {
-          return ((FILE*)ptr)==((FILE*)other.ptr);
+          return ((FileObject*)ptr)==((FileObject*)other.ptr);
         }
         else if(type=='s')
         {
-          return other.s==s;
+          return *(string*)other.ptr==*(string*)ptr;
         }
         else if(type=='j')
         {
-            PltList a = *(PltList*)ptr;
-            PltList b = *(PltList*)other.ptr;
-            return a==b;
+            return *(PltList*)ptr==*(PltList*)other.ptr;
         }
-        else if(type=='q')
+        else if(other.type=='y' || other.type=='r')
         {
-          return false;
+          return ptr==other.ptr;
+        }
+        else if(type=='q' || type=='z')
+        {
+          return ptr==other.ptr;;
         }
         else if(type=='a')
         {
-            Dictionary a = *(Dictionary*)ptr;
-            Dictionary b = *(Dictionary*)other.ptr;
-            return a==b;
+            return *(Dictionary*)ptr==*(Dictionary*)other.ptr;
         }
         return false;
     }
@@ -426,17 +142,17 @@ struct PltObject
 size_t hashPltObject(const PltObject&);
 size_t hashList(void* p)
 {
-  PltList l = *(PltList*)p;
+  PltList& l = *(PltList*)p;
    size_t hash = l.size();
-   for (auto i : l)
+   for (auto& i : l)
       hash ^= hashPltObject(i) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
     return hash;
 }
 size_t hashDict(void* p)
 {
-  Dictionary d = *(Dictionary*)p;
+  Dictionary& d = *(Dictionary*)p;
    size_t hash = d.size();
-    for (auto i : d)
+    for (const auto& i : d)
       hash ^= hashPltObject(i.first)+hashPltObject(i.second) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
     return hash;
 }
@@ -444,75 +160,244 @@ size_t hashPltObject(const PltObject& a)
 {
     char t = a.type;
     if(t=='s')
-    {
-        return std::hash<std::string>()(a.s);
-    }
+        return std::hash<std::string>()(*(string*)a.ptr);
     else if(t=='i')
-    {
         return std::hash<int>()(a.i);
-    }
     else if(t=='l')
-    {
         return std::hash<long long int>()(a.l);
-    }
     else if(t=='f')
-    {
-        return std::hash<float>()(a.f);
-    }
+        return std::hash<double>()(a.f);
     else if(t=='j')
-    {
         return hashList(a.ptr);
-    }
     else if(t=='a')
-    {
         return hashDict(a.ptr);
-    }
     else if(t=='u')
-    {
-        return std::hash<FILE*>()((FILE*)a.ptr);
-    }
+        return std::hash<FILE*>()(((FileObject*)a.ptr)->fp);
     else if(t=='m')
-    {
         return std::hash<unsigned char>()(a.i);
-    }
     else if(t=='b')
-    {
         return std::hash<bool>()(a.i);
-    }
+    else if(t=='r' || t=='q' || t=='y')
+      return std::hash<void*>()(a.ptr);
     return 0;
 }
-struct NativeObject
+struct Klass
 {
-   void* ptr;
-   Dictionary attr;
+  string name;
+  std::unordered_map<string,PltObject> members;
+  std::unordered_map<string,PltObject> privateMembers;
 };
-void PltObject::operator=(NativeObject x)
+struct KlassInstance
 {
-        destroy();
-        type = 'c';
-        NativeObject* p = new NativeObject(x);
-        ptr = (void*)p;
-        active = true;;
-}
-PltObject::PltObject(NativeObject x)
+  Klass* klass;
+  std::unordered_map<string,PltObject> members;
+  std::unordered_map<string,PltObject> privateMembers;
+};
+struct Module
 {
-             ptr = (void*) new NativeObject(x);
-           type = 'c';
-           active = true;
-}
-NativeObject* NewNativeObject(void* x)
+  std::string name;
+  std::unordered_map<string,PltObject> members;
+};
+struct FunObject
 {
+  Klass* klass;//functions can be binded to classes as methods in which case they will have access to private members of that class
+  string name;
+  size_t i;
+  size_t args;
+  PltList opt; //default/optional parameters
+};
+struct ErrObject
+{
+  string des;
+  int code;
+};
+typedef void(*NativeFunPtr)(PltObject*,int,PltObject*);
+struct NativeFunction
+{
+  Klass* klass;//address of class the function is member of (if any NULL otherwise)
+  NativeFunPtr addr;
+  string name;//name of function (used when printing errors)
+};
+enum CoState
+{
+  SUSPENDED,
+  RUNNING,
+  STOPPED,
+};
+struct Coroutine
+{
+  int curr;//index in bytecode from where to resume the coroutine
+  PltList locals;
+  CoState state;
+  string name;
+  FunObject* fun;//function from which this coroutine object was made
+  bool giveValOnResume;
+};
+//Helper and extension API Functions
 
-  NativeObject* p = new NativeObject(*(NativeObject*)x);
-  return p;
+inline PltObject PltObjectFromStringPtr(string* s)
+{
+  PltObject ret;
+  ret.type = 's';
+  ret.ptr = (void*)s;
+  return ret;
+}
+
+inline PltObject PltObjectFromInt(int x)
+{
+  PltObject ret;
+  ret.type = 'i';
+  ret.i = x;
+  return ret;
+}
+inline PltObject PltObjectFromDouble(double f)
+{
+  PltObject ret;
+  ret.type = 'f';
+  ret.f = f;
+  return ret;
+}
+inline PltObject PltObjectFromInt64(long long int x)
+{
+  PltObject ret;
+  ret.type = 'l';
+  ret.l = x;
+  return ret;
+}
+inline PltObject PltObjectFromPointer(void* p)
+{
+  PltObject ret;
+  ret.type = 'p';
+  ret.ptr = p;
+  return ret;
+}
+inline PltObject PltObjectFromByte(unsigned char x)
+{
+  PltObject ret;
+  ret.type = 'm';
+  ret.i = x;
+  return ret;
+}
+
+inline PltObject PltObjectFromList(PltList* l)
+{
+  PltObject ret;
+  ret.type = PLT_LIST;
+  ret.ptr = (void*)l;
+  return ret;
+}
+inline PltObject PltObjectFromDict(Dictionary* l)
+{
+  PltObject ret;
+  ret.type = PLT_DICT;
+  ret.ptr = (void*)l;
+  return ret;
+}
+inline PltObject PltObjectFromModule(Module* k)
+{
+  PltObject ret;
+  ret.type = PLT_MODULE;
+  ret.ptr = (void*)k;
+  return ret;
+}
+inline PltObject PltObjectFromKlass(Klass* k)
+{
+  PltObject ret;
+  ret.type = PLT_CLASS;
+  ret.ptr = (void*)k;
+  return ret;
+}
+inline PltObject PltObjectFromKlassInstance(KlassInstance* ki)
+{
+  PltObject ret;
+  ret.type = PLT_OBJ;
+  ret.ptr = (void*)ki;
+  return ret;
+}
+
+typedef PltList*(*alloc1)();
+typedef Dictionary*(*alloc2)();
+typedef string*(*alloc3)();
+typedef ErrObject*(*alloc4)();
+typedef FileObject*(*alloc5)();
+typedef Klass*(*alloc6)();
+typedef KlassInstance*(*alloc7)();
+typedef NativeFunction*(*alloc8)();
+typedef Module*(*alloc9)();
+//
+alloc1 vm_allocList;
+alloc2 vm_allocDict;
+alloc3 vm_allocString;
+alloc4 vm_allocErrObject;
+alloc5 vm_allocFileObject;
+alloc6 vm_allocKlass;
+alloc7 vm_allocKlassInstance;
+alloc8 vm_allocNativeFunObj;
+alloc9 vm_allocModule;
+inline PltObject PltObjectFromString(string s)
+{
+  string* ptr = vm_allocString();
+  *ptr = s;
+  PltObject ret;
+  ret.type = 's';
+  ret.ptr = (void*)ptr;
+  return ret;
 }
 PltObject Plt_Err(ErrCode e,string des)
 {
   PltObject ret;
+  ErrObject* p = vm_allocErrObject();
+  p->des = des;
+  p->code = (int)e;
   ret.type = 'e';
-  ret.s = des;
-  ret.i = e;
+  ret.ptr = (void*) p;
   return ret;
 }
-
+inline PltObject PltObjectFromMethod(string name,NativeFunPtr r,Klass* k)
+{
+  PltObject ret;
+  NativeFunction* fn = vm_allocNativeFunObj();
+  fn->name = name;
+  fn->klass = k;
+  fn->addr = r;
+  ret.type = 'y';
+  ret.ptr = (void*)fn;
+  return ret;
+}
+inline PltObject PltObjectFromFunction(string name,NativeFunPtr r,Klass* k=NULL)
+{
+  PltObject ret;
+  NativeFunction* fn = vm_allocNativeFunObj();
+  fn->name = name;
+  fn->klass = k;
+  fn->addr = r;
+  ret.type = 'y';
+  ret.ptr = (void*)fn;
+  return ret;
+}
+//
+struct allocFuncions
+{
+  alloc1 a1;
+  alloc2 a2;
+  alloc3 a3;
+  alloc4 a4;
+  alloc5 a5;
+  alloc6 a6;
+  alloc7 a7;
+  alloc8 a8;
+  alloc9 a9;
+};
+extern "C" void api_setup(allocFuncions* p)
+{
+  vm_allocList = p->a1;
+  vm_allocDict = p->a2;
+  vm_allocString = p->a3;
+  vm_allocErrObject = p->a4;
+  vm_allocFileObject = p->a5;
+  vm_allocKlass = p->a6;
+  vm_allocKlassInstance = p->a7;
+  vm_allocNativeFunObj = p->a8;
+  vm_allocModule = p->a9;
+}
 #endif
