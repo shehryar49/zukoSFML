@@ -1,25 +1,21 @@
 import sfml
-var win = sfml.RenderWindow(640,480,"Game")
-var bg = sfml.Color(0,0,0)
-var rcolor = sfml.Color(0,0,235)
-var event = sfml.Event()
-var circle = sfml.Circle(100)
+
+var win = sfml.RenderWindow(640,480,"My Game")
+var running = true
+var ev = sfml.Event()
+var color = sfml.Color(0,0,255)
+var circle = sfml.Circle(80.0)
+circle.setPosition(230.0,150.0)
 circle.setPointCount(3)
-circle.setPosition(320,240)
-circle.setOrigin(100,100)
-circle.setFillColor(rcolor)
-while(win.isOpen())
+circle.setFillColor(color)
+while(running)
 {
-  while(win.pollEvent(event))
-  {
-    var i = event.type()
-    #println(i)
-    if(i==0)
-        win.close()
-  }
-  win.clear(bg)
-  win.draw(circle)
-  win.display()
-  circle.rotate(40)
-  sleep(200)
+    while(win.pollEvent(ev))
+    {
+        if(ev.type == sfml.EventClosed)
+          running = false
+    }
+    win.clear()
+    win.draw(circle)
+    win.display()
 }
