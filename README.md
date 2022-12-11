@@ -10,6 +10,6 @@ HOW TO COMPILE
  Compile as a shared library
  
  Use command: 
-   g++ -shared sfml.cpp -o sfml.dll -lsfml-graphics-s -lsfml-system-s -lfsml-window-s -lwinmm -lopengl32
- Then copy the sfml.so to plutonium's modules folder
+   g++ -shared sfml.cpp -o sfml.so -lsfml-graphics-s -lsfml-system-s -lfsml-window-s -fPIC
+ Then copy the sfml.so to plutonium's modules folder.
  
