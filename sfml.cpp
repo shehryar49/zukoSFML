@@ -31,28 +31,36 @@ PltObject init()
     colorclass->name = "Color";
     colorclass->members.emplace("__construct__",PObjFromMethod("__construct__",&Color__construct,colorclass));
     colorclass->members.emplace("__del__",PObjFromMethod("__del__",&Color__del,colorclass));
-    /*Klass* rectclass = vm_allocKlass();
+    
+    rectclass = vm_allocKlass();
     rectclass->name = "Rectangle";
     rectclass->members.emplace("__construct__",PObjFromMethod("__construct__",&Rect__construct,rectclass));
     rectclass->members.emplace("setPosition",PObjFromMethod("setPosition",&Rect__setpos,rectclass));
     rectclass->members.emplace("setFillColor",PObjFromMethod("setFillColor",&Rect__setfillcolor,rectclass));
-    */
+    
     evclass = vm_allocKlass();
     evclass->name = "Event";
     evclass->members.emplace("__construct__",PObjFromMethod("__construct__",&Event__construct,evclass));
     evclass->members.emplace("__del__",PObjFromMethod("__del__",&Event__del,evclass));
     evclass->members.emplace("type",nil);
-
+    evclass->members.emplace("keycode",nil);
     //Add classes to module
     Module* sfml = vm_allocModule();
     sfml->name = "sfml";
     sfml->members.emplace("RenderWindow",PObjFromKlass(renderwinclass));
     sfml->members.emplace("Circle",PObjFromKlass(circleclass));
     sfml->members.emplace("Color",PObjFromKlass(colorclass));
-  //  sfml->members.emplace("Rectangle",PObjFromKlass(rectclass));
+    sfml->members.emplace("Rectangle",PObjFromKlass(rectclass));
     sfml->members.emplace("Event",PObjFromKlass(evclass));
     sfml->members.emplace("EventClosed",PObjFromInt(sf::Event::Closed));
-
+    sfml->members.emplace("EventKeyPressed",PObjFromInt(sf::Event::KeyPressed));
+    sfml->members.emplace("KeyboardA",PObjFromInt(sf::Keyboard::A));
+    sfml->members.emplace("KeyboardS",PObjFromInt(sf::Keyboard::S));
+    sfml->members.emplace("KeyboardD",PObjFromInt(sf::Keyboard::D));
+    sfml->members.emplace("KeyboardW",PObjFromInt(sf::Keyboard::W));
+    sfml->members.emplace("KeyboardUp",PObjFromInt(sf::Keyboard::Up));
+    
+    
     return PObjFromModule(sfml);
        
 }
@@ -180,8 +188,13 @@ PltObject RenderWindow__pollevent(PltObject* args,int n)
     sf::Event* e = (sf::Event*)obj->members[".handle"].ptr;
     bool b = w->pollEvent(*e);
     if(b)
+    {
       obj->members["type"] = PObjFromInt(e->type);
+      if(e->type == sf::Event::KeyPressed)
+        obj->members["keycode"] = PObjFromInt(e->key.code);
+    }
     return PObjFromBool( b );
+
         
 }
 
@@ -319,6 +332,75 @@ PltObject Circle__del(PltObject* args,int n)
     return nil;
   sf::CircleShape* circle = (sf::CircleShape*)ki->members[".handle"].ptr;
   delete circle;
+  ki->members[".handle"] = nil;
+  return nil;
+}
+//Rectangle
+PltObject Rect__construct(PltObject* args,int n)
+{
+  if(n!=3)
+  {
+    return Plt_Err(ARGUMENT_ERROR,"3 arguments needed!");
+    
+  }
+  float width = 0;
+  float height = 0;
+  if(args[0].type != PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=rectclass)
+    return Plt_Err(TYPE_ERROR,"self must be an instance of Rectangle class!");
+  if(args[1].type!=PLT_FLOAT || args[1].type!=PLT_FLOAT)
+      return Plt_Err(TYPE_ERROR,"Width and height must be floats!");
+  
+  KlassInstance* k = (KlassInstance*)args[0].ptr;
+  sf::RectangleShape* c = new sf::RectangleShape(sf::Vector2f(args[1].f,args[2].f));
+  k->members.emplace(".handle",PObjFromPtr(c));
+}
+PltObject Rect__setpos(PltObject* args,int n)
+{
+  if(n!=3)
+  {
+    return Plt_Err(ARGUMENT_ERROR,"Three arguments needed!");
+    
+  }
+  if(args[0].type != PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=rectclass)
+  {
+    return Plt_Err(TYPE_ERROR,"self must be an instance of Rectangle class!");
+    
+  }
+  if(args[1].type!=PLT_FLOAT || args[2].type!=PLT_FLOAT)
+  {
+    return Plt_Err(TYPE_ERROR,"Position coordinates must be floats!");
+    
+  }
+  KlassInstance* k = (KlassInstance*)args[0].ptr;
+  sf::RectangleShape* c = (sf::RectangleShape*)k->members[".handle"].ptr;
+  c->setPosition(args[1].f,args[2].f);
+  
+}
+PltObject Rect__setfillcolor(PltObject* args,int n)
+{
+  if(n!=2)
+    return Plt_Err(ARGUMENT_ERROR,"Two arguments needed!");
+  if(args[0].type != PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=rectclass)
+    return Plt_Err(TYPE_ERROR,"Argument 1(self) must be an instance of Rectangle class!");
+  if(args[1].type!=PLT_OBJ || ((KlassInstance*)args[1].ptr)->klass!=colorclass)
+    return Plt_Err(TYPE_ERROR,"Argument 2 must be an instance of class Color!");
+  KlassInstance* k = (KlassInstance*)args[0].ptr;
+  KlassInstance* j = (KlassInstance*)args[1].ptr;
+  sf::RectangleShape* c = (sf::RectangleShape*)k->members[".handle"].ptr;
+  sf::Color* color = (sf::Color*)j->members[".handle"].ptr;
+  c->setFillColor(*color);
+}
+PltObject Rect__del(PltObject* args,int n)
+{
+  if(n != 1)
+    return nil;
+  if(args[0].type != PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass != rectclass)
+    return nil;
+  KlassInstance* ki = (KlassInstance*)args[0].ptr;
+  if(ki->members[".handle"].type == PLT_NIL)
+    return nil;
+  sf::RectangleShape* rect = (sf::RectangleShape*)ki->members[".handle"].ptr;
+  delete rect;
   ki->members[".handle"] = nil;
   return nil;
 }
