@@ -25,8 +25,8 @@ Note: This module is not complete.It includes very basic things like windows,eve
   and /opt/plutonium/modules for Linux)
  
  # Naming Conventions
- |C++|Plutonium|
- |-------------|
+ | C++   | Plutonium |
+ | ----- | --------- |
  |sf::RenderWindow|sfml.RenderWindow|
  |sf::Color|sfml.Color|
  |sf::Event|sfml.Event|
