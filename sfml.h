@@ -1,34 +1,34 @@
 #ifndef PLTSFML_H_
 #define PLTSFML_H_
-#include "../include/PltObject.h"
+#include "PltObject.h"
 extern "C"
 {
-    void init(PltObject*);
+    PltObject init();
     
     //RenderWindow methods
-    void RenderWindow__construct(PltObject*,int,PltObject*);
-    void RenderWindow__draw(PltObject*,int,PltObject*);
-    void RenderWindow__clear(PltObject*,int,PltObject*);
-    void RenderWindow__display(PltObject*,int,PltObject*);
-    void RenderWindow__pollevent(PltObject*,int,PltObject*);
-    void RenderWindow__close(PltObject*,int,PltObject*);
-    
+    PltObject RenderWindow__construct(PltObject*,int);
+    PltObject RenderWindow__draw(PltObject*,int);
+    PltObject RenderWindow__clear(PltObject*,int);
+    PltObject RenderWindow__display(PltObject*,int);
+    PltObject RenderWindow__pollevent(PltObject*,int);
+    PltObject RenderWindow__close(PltObject*,int);
+
     //Circle Methods
-    void Circle__construct(PltObject*,int,PltObject*);
-    void Circle__setpointcount(PltObject*,int,PltObject*);
-    void Circle__setfillcolor(PltObject*,int,PltObject*);
-    void Circle__setpos(PltObject*,int,PltObject*);
-    
+    PltObject Circle__construct(PltObject*,int);
+    PltObject Circle__setpointcount(PltObject*,int);
+    PltObject Circle__setfillcolor(PltObject*,int);
+    PltObject  Circle__setpos(PltObject*,int);
+    PltObject Circle__del(PltObject*,int);
     //Color methods
-    void Color__construct(PltObject*,int,PltObject*);
-
+    PltObject  Color__construct(PltObject*,int);
+    PltObject Color__del(PltObject*,int);
     //Rectangle Methods
-    void Rect__construct(PltObject*,int,PltObject*);
-    void Rect__setfillcolor(PltObject*,int,PltObject*);
-    void Rect__setpos(PltObject*,int,PltObject*);
-
+    PltObject  Rect__construct(PltObject*,int);
+    PltObject  Rect__setfillcolor(PltObject*,int);
+    PltObject  Rect__setpos(PltObject*,int);
+    PltObject  Rect__del(PltObject*,int);
     //Event Methods
-    void Event__construct(PltObject*,int,PltObject*);
-
+    PltObject  Event__construct(PltObject*,int);
+    PltObject  Event__del(PltObject*,int);
 }
 #endif
