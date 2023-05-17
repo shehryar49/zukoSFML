@@ -9,7 +9,7 @@ HOW TO COMPILE
 -----------------
  Compile as a shared library on linux or dll on Windows
  For linux Use command: 
-   g++ -shared sfml.cpp -o sfml.so -lsfml-graphics-s -lsfml-system-s -lsfml-window-s -fPIC
+   ```g++ -shared sfml.cpp -o sfml.so -lsfml-graphics-s -lsfml-system-s -lsfml-window-s -fPIC```
    or don't link statically it's your choice
  For Windows:
    Create a dll project and add sfml.h and sfml.cpp as sources to this project. Make sure all functions are exported
