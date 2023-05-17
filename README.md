@@ -24,3 +24,12 @@ Note: This module is not complete.It includes very basic things like windows,eve
  You need to copy the resultant shared library or DLL to plutonium's modules folder(C:\plutonium\modules for Windows
   and /opt/plutonium/modules for Linux)
  
+ # Naming Conventions
+ |C++|Plutonium|
+ |-------------|
+ |sf::RenderWindow|sfml.RenderWindow|
+ |sf::Color|sfml.Color|
+ |sf::Event|sfml.Event|
+ |sf::Circle|sfml.Circle|
+ |sf::Event::Closed| sfml.EventClosed|
+ 
