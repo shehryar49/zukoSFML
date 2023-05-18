@@ -32,4 +32,5 @@ Note: This module is not complete.It includes very basic things like windows,eve
  |sf::Event|sfml.Event|
  |sf::Circle|sfml.Circle|
  |sf::Event::Closed| sfml.EventClosed|
+ |sf::Keyboard::A|sfml.KeyboardA|
  
