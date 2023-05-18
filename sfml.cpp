@@ -165,6 +165,13 @@ PltObject init()
     sfml->members.emplace("KeyboardD",PObjFromInt(sf::Keyboard::D));
     sfml->members.emplace("KeyboardW",PObjFromInt(sf::Keyboard::W));
     sfml->members.emplace("KeyboardUp",PObjFromInt(sf::Keyboard::Up));
+    sfml->members.emplace("KeyboardDown",PObjFromInt(sf::Keyboard::Down));
+    sfml->members.emplace("KeyboardLeft",PObjFromInt(sf::Keyboard::Left));
+    sfml->members.emplace("KeyboardRight",PObjFromInt(sf::Keyboard::Right));
+    sfml->members.emplace("KeyboardEsc",PObjFromInt(sf::Keyboard::Escape));
+    sfml->members.emplace("KeyboardEnter",PObjFromInt(sf::Keyboard::Enter));
+    //More keymappings to be added later
+    
     sfml->members.emplace("LinesStrip",PObjFromInt(sf::LinesStrip));
     sfml->members.emplace("MouseLeft",PObjFromInt(sf::Mouse::Left));
     
