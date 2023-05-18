@@ -2,10 +2,22 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Audio.hpp>
 #include "sfml.h"
 #include <stdio.h>
 #define EXPORT 0
 Klass *renderwinclass,*circleclass,*rectclass,*evclass,*colorclass;
+Klass* clockclass;
+Klass* timeclass;
+Klass* vaclass;
+Klass* fontclass;
+Klass* textclass;
+Klass* musicclass;
+Klass* textureclass;
+Klass* spriteclass;
+Klass* vector2fclass;
+Klass* floatrectclass;
+
 PltObject nil;
 PltObject init()
 {
@@ -18,6 +30,7 @@ PltObject init()
     renderwinclass->members.emplace("draw",PObjFromMethod("draw",&RenderWindow__draw,renderwinclass));
     renderwinclass->members.emplace("display",PObjFromMethod("display",&RenderWindow__display,renderwinclass));
     renderwinclass->members.emplace("pollEvent",PObjFromMethod("pollEvent",&RenderWindow__pollevent,renderwinclass));
+    renderwinclass->members.emplace("setFramerateLimit",PObjFromMethod("setFramerateLimit",&RenderWindow__setFrameRateLimit,renderwinclass));
     renderwinclass->members.emplace("close",PObjFromMethod("close",&RenderWindow__close,renderwinclass));
     
     circleclass = vm_allocKlass();
@@ -37,13 +50,93 @@ PltObject init()
     rectclass->members.emplace("__construct__",PObjFromMethod("__construct__",&Rect__construct,rectclass));
     rectclass->members.emplace("setPosition",PObjFromMethod("setPosition",&Rect__setpos,rectclass));
     rectclass->members.emplace("setFillColor",PObjFromMethod("setFillColor",&Rect__setfillcolor,rectclass));
+    rectclass->members.emplace("setOutlineColor",PObjFromMethod("setOutlineColor",&Rect__setOutlineColor,rectclass));
+    rectclass->members.emplace("setOutlineThickness",PObjFromMethod("setOutlineThickness",&Rect__setOutlineThickness,rectclass));
+    rectclass->members.emplace("setPosition",PObjFromMethod("setPosition",&Rect__setpos,rectclass));
+    rectclass->members.emplace("getPosition",PObjFromMethod("getPosition",&Rect__getPosition,rectclass));
+    rectclass->members.emplace("getGlobalBounds",PObjFromMethod("getGlobalBounds",&Rect__getGlobalBounds,rectclass));
+    rectclass->members.emplace("setSize",PObjFromMethod("setSize",&Rect__setSize,rectclass));
     
+
     evclass = vm_allocKlass();
     evclass->name = "Event";
     evclass->members.emplace("__construct__",PObjFromMethod("__construct__",&Event__construct,evclass));
     evclass->members.emplace("__del__",PObjFromMethod("__del__",&Event__del,evclass));
     evclass->members.emplace("type",nil);
     evclass->members.emplace("keycode",nil);
+    
+    textureclass = vm_allocKlass();
+    textureclass->name = "Texture";
+    textureclass->members.emplace("__construct__",PObjFromMethod("__construct__",&Texture__construct,textureclass));
+    textureclass->members.emplace("loadFromFile",PObjFromMethod("loadFromFile",&Texture__loadFromFile,textureclass));
+    textureclass->members.emplace("__del__",PObjFromMethod("__del__",&Texture__del,textureclass));
+    
+    clockclass = vm_allocKlass();
+    clockclass->name = "Clock";
+    clockclass->members.emplace("__construct__",PObjFromMethod("__construct__",&Clock__construct,clockclass));
+    clockclass->members.emplace("restart",PObjFromMethod("restart",&Clock__restart,clockclass));
+    clockclass->members.emplace("__del__",PObjFromMethod("__del__",&Clock__del,clockclass));
+
+    vaclass = vm_allocKlass();
+    vaclass->name = "VertexArray";
+    vaclass->members.emplace("__construct__",PObjFromMethod("__construct__",&VertexArray__construct,vaclass));
+    vaclass->members.emplace("resize",PObjFromMethod("resize",&VertexArray__resize,vaclass));
+    vaclass->members.emplace("setPrimitiveType",PObjFromMethod("setPrimitiveType",&VertexArray__setPrimType,vaclass));
+    vaclass->members.emplace("setKth",PObjFromMethod("setKth",&VertexArray__setKth,vaclass));    
+    vaclass->members.emplace("__del__",PObjFromMethod("__del__",&VertexArray__del,vaclass));
+
+    fontclass = vm_allocKlass();
+    fontclass->name = "Font";
+    fontclass->members.emplace("__construct__",PObjFromMethod("__construct__",&Font__construct,fontclass));
+    fontclass->members.emplace("loadFromFile",PObjFromMethod("loadFromFile",&Font__loadFromFile,fontclass));
+    fontclass->members.emplace("__del__",PObjFromMethod("__del__",&Font__del,fontclass));
+
+    spriteclass = vm_allocKlass();
+    spriteclass->name = "Sprite";
+    spriteclass->members.emplace("__construct__",PObjFromMethod("__construct__",&Sprite__construct,spriteclass));
+    spriteclass->members.emplace("setTexture",PObjFromMethod("setTexture",&Sprite__setTexture,spriteclass));
+    spriteclass->members.emplace("__del__",PObjFromMethod("__del__",&Sprite__del,spriteclass));
+    
+    textclass = vm_allocKlass();
+    textclass->name = "Text";
+    textclass->members.emplace("__construct__",PObjFromMethod("__construct__",&Text__construct,textclass));
+    textclass->members.emplace("setCharacterSize",PObjFromMethod("setCharacterSize",&Text__setCharacterSize,textclass));
+    textclass->members.emplace("setString",PObjFromMethod("setString",&Text__setString,textclass));
+    textclass->members.emplace("setPosition",PObjFromMethod("setPosition",&Text__setPostion,textclass));
+    textclass->members.emplace("setFont",PObjFromMethod("setFont",&Text__setFont,textclass));
+    textclass->members.emplace("setFillColor",PObjFromMethod("setFillColor",&Text__setFillColor,textclass));
+    textclass->members.emplace("__del__",PObjFromMethod("__del__",&Text__del,textclass));
+
+    musicclass = vm_allocKlass();
+    musicclass->name = "Music";
+    musicclass->members.emplace("__construct__",PObjFromMethod("__construct__",&Music__construct,musicclass));
+    musicclass->members.emplace("openFromFile",PObjFromMethod("openFromFile",&Music__openFromFile,musicclass));
+    musicclass->members.emplace("play",PObjFromMethod("play",&Music__play,musicclass));
+    musicclass->members.emplace("setLoop",PObjFromMethod("setLoop",&Music__setLoop,musicclass));
+    musicclass->members.emplace("__del__",PObjFromMethod("__del__",&Music__del,musicclass));
+      
+    timeclass = vm_allocKlass();
+    timeclass->name = "Time";
+    timeclass->members.emplace("asSeconds",PObjFromMethod("asSeconds",&Time__asSeconds,timeclass));
+    timeclass->members.emplace("__del__",PObjFromMethod("__del__",&Time__del,timeclass));
+    
+    vector2fclass = vm_allocKlass();
+    vector2fclass->name = "Vector2f";
+    vector2fclass->members.emplace("x",nil);
+    vector2fclass->members.emplace("y",nil);
+    
+    floatrectclass = vm_allocKlass();
+    floatrectclass->name = "FloatRect";
+    floatrectclass->members.emplace("width",nil);
+    floatrectclass->members.emplace("height",nil);
+    floatrectclass->members.emplace("top",nil);
+    floatrectclass->members.emplace("left",nil);
+    floatrectclass->members.emplace("intersects",PObjFromMethod("intersects",&FloatRect__intersects,floatrectclass));
+    
+    vm_markImportant(timeclass);
+    vm_markImportant(vector2fclass);
+    vm_markImportant(floatrectclass);
+    
     //Add classes to module
     Module* sfml = vm_allocModule();
     sfml->name = "sfml";
@@ -52,17 +145,51 @@ PltObject init()
     sfml->members.emplace("Color",PObjFromKlass(colorclass));
     sfml->members.emplace("Rectangle",PObjFromKlass(rectclass));
     sfml->members.emplace("Event",PObjFromKlass(evclass));
+    sfml->members.emplace("Clock",PObjFromKlass(clockclass));
+    sfml->members.emplace("VertexArray",PObjFromKlass(vaclass));
+    sfml->members.emplace("Font",PObjFromKlass(fontclass));
+    sfml->members.emplace("Text",PObjFromKlass(textclass));
+    sfml->members.emplace("Music",PObjFromKlass(musicclass));
+    sfml->members.emplace("Texture",PObjFromKlass(textureclass));
+    sfml->members.emplace("Sprite",PObjFromKlass(spriteclass));
+    sfml->members.emplace("Vector2f",PObjFromKlass(vector2fclass));
+    
+    sfml->members.emplace("getMousePosition",PObjFromFunction("getMousePosition",&getMousePosition));
+
     sfml->members.emplace("EventClosed",PObjFromInt(sf::Event::Closed));
     sfml->members.emplace("EventKeyPressed",PObjFromInt(sf::Event::KeyPressed));
+    sfml->members.emplace("EventMouseButtonPressed",PObjFromInt(sf::Event::MouseButtonPressed));
+    sfml->members.emplace("EventMouseMoved",PObjFromInt(sf::Event::MouseMoved));
     sfml->members.emplace("KeyboardA",PObjFromInt(sf::Keyboard::A));
     sfml->members.emplace("KeyboardS",PObjFromInt(sf::Keyboard::S));
     sfml->members.emplace("KeyboardD",PObjFromInt(sf::Keyboard::D));
     sfml->members.emplace("KeyboardW",PObjFromInt(sf::Keyboard::W));
     sfml->members.emplace("KeyboardUp",PObjFromInt(sf::Keyboard::Up));
+    sfml->members.emplace("LinesStrip",PObjFromInt(sf::LinesStrip));
+    sfml->members.emplace("MouseLeft",PObjFromInt(sf::Mouse::Left));
     
     
     return PObjFromModule(sfml);
        
+}
+//Global Module functions
+PltObject getMousePosition(PltObject* args,int n)
+{
+  if(n!=1)
+    return Plt_Err(ARGUMENT_ERROR,"1 argument needed!");
+  if(args[0].type != PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
+  {
+    return Plt_Err(TYPE_ERROR,"Argument 1 must be an instance of RenderWindow");
+  }
+  KlassInstance* k = (KlassInstance*)args[0].ptr;
+  sf::RenderWindow* w = (sf::RenderWindow*)k->members[".handle"].ptr;
+  KlassInstance* ki = vm_allocKlassInstance();
+  ki->klass = vector2fclass;
+  ki->members = vector2fclass->members;
+  sf::Vector2i v = sf::Mouse::getPosition(*w);
+  ki->members["x"] = PObjFromDouble(v.x);
+  ki->members["y"] = PObjFromDouble(v.y);
+  return PObjFromKlassInst(ki);
 }
 //RenderWindow
 PltObject RenderWindow__construct(PltObject* args,int n)
@@ -81,19 +208,27 @@ PltObject RenderWindow__construct(PltObject* args,int n)
 }
 PltObject RenderWindow__clear(PltObject* args,int n)
 {
-    if(n!=1)
+    if(n!=1 && n!=2)
     {
-        return Plt_Err(ARGUMENT_ERROR,"1 argument needed!");
-        
+        return Plt_Err(ARGUMENT_ERROR,"1 or 2 arguments needed!");
     }
     if(args[0].type!=PLT_OBJ && ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
     {
         return Plt_Err(TYPE_ERROR,"self must be an instance of RenderWindow");
         
     }
+    sf::Color c = sf::Color::Black;
+    if(n == 2)
+    {
+      if(args[1].type!=PLT_OBJ || ((KlassInstance*)args[1].ptr)->klass != colorclass)
+        return Plt_Err(TYPE_ERROR,"Argument 2 must be an instance of Color");
+      KlassInstance* ki = (KlassInstance*)args[1].ptr;
+      sf::Color* color = (sf::Color*)ki->members[".handle"].ptr;
+      c = *color;
+    }
     KlassInstance* k = (KlassInstance*)args[0].ptr;
     sf::RenderWindow* w = (sf::RenderWindow*)k->members[".handle"].ptr;
-    w->clear();
+    w->clear(c);
 }
 PltObject RenderWindow__close(PltObject* args,int n)
 {
@@ -141,11 +276,7 @@ PltObject RenderWindow__draw(PltObject* args,int n)
         
     }
     KlassInstance* obj = (KlassInstance*)args[1].ptr;
-    if(obj->klass!=rectclass && obj->klass!=circleclass)
-    {
-        return Plt_Err(TYPE_ERROR,"Argument must be a drawable sfml object!");
-        
-    }
+    
     KlassInstance* k = (KlassInstance*)args[0].ptr;
     sf::RenderWindow* w = (sf::RenderWindow*)k->members[".handle"].ptr;
     if(obj->klass==circleclass)
@@ -158,7 +289,24 @@ PltObject RenderWindow__draw(PltObject* args,int n)
         sf::RectangleShape* d = (sf::RectangleShape*)obj->members[".handle"].ptr; 
         w->draw(*d);
     }
-    
+    else if(obj->klass==spriteclass)
+    {
+        sf::Sprite* d = (sf::Sprite*)obj->members[".handle"].ptr; 
+        w->draw(*d);
+    }
+    else if(obj->klass==textclass)
+    {
+        sf::Text* d = (sf::Text*)obj->members[".handle"].ptr; 
+        w->draw(*d);
+    }
+    else if(obj->klass==vaclass)
+    {
+        sf::VertexArray* d = (sf::VertexArray*)obj->members[".handle"].ptr; 
+        w->draw(*d);
+    }
+    else
+      return Plt_Err(TYPE_ERROR,"Argument must be a drawable sfml object!");
+    return nil;
 }
 PltObject RenderWindow__pollevent(PltObject* args,int n)
 {
@@ -192,10 +340,24 @@ PltObject RenderWindow__pollevent(PltObject* args,int n)
       obj->members["type"] = PObjFromInt(e->type);
       if(e->type == sf::Event::KeyPressed)
         obj->members["keycode"] = PObjFromInt(e->key.code);
+      if(e->type == sf::Event::MouseButtonPressed)
+        obj->members.emplace("mouseButton",PObjFromInt(e->mouseButton.button));  
     }
     return PObjFromBool( b );
 
         
+}
+PltObject RenderWindow__setFrameRateLimit(PltObject* args,int n)
+{
+    if(n!=2)
+        return Plt_Err(ARGUMENT_ERROR,"2 argument needed!");
+    if(args[0].type!=PLT_OBJ && ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
+        return Plt_Err(TYPE_ERROR,"self must be an instance of RenderWindow");
+    if(args[1].type!=PLT_INT)
+        return Plt_Err(TYPE_ERROR,"Argument 2  must be an integer.");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::RenderWindow* w = (sf::RenderWindow*)k->members[".handle"].ptr;
+    w->setFramerateLimit(args[1].i);        
 }
 
 //Event
@@ -376,6 +538,83 @@ PltObject Rect__setpos(PltObject* args,int n)
   c->setPosition(args[1].f,args[2].f);
   
 }
+PltObject Rect__setSize(PltObject* args,int n)
+{
+  if(n!=3)
+  {
+    return Plt_Err(ARGUMENT_ERROR,"Three arguments needed!");
+    
+  }
+  if(args[0].type != PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=rectclass)
+  {
+    return Plt_Err(TYPE_ERROR,"self must be an instance of Rectangle class!");
+    
+  }
+  if(args[1].type!=PLT_FLOAT || args[2].type!=PLT_FLOAT)
+  {
+    return Plt_Err(TYPE_ERROR,"Size values must be floats!");
+    
+  }
+  KlassInstance* k = (KlassInstance*)args[0].ptr;
+  sf::RectangleShape* c = (sf::RectangleShape*)k->members[".handle"].ptr;
+  c->setSize(sf::Vector2f(args[1].f,args[2].f));
+  
+}
+PltObject Rect__getPosition(PltObject* args,int n)
+{
+  if(n!=1)
+    return Plt_Err(ARGUMENT_ERROR,"1 argument needed!");
+  if(args[0].type != PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=rectclass)
+    return Plt_Err(TYPE_ERROR,"self must be an instance of Rectangle class!");
+  KlassInstance* k = (KlassInstance*)args[0].ptr;
+  sf::RectangleShape* c = (sf::RectangleShape*)k->members[".handle"].ptr;
+  KlassInstance* ki = vm_allocKlassInstance();
+  ki->klass = vector2fclass;
+  ki->members = vector2fclass->members;
+  sf::Vector2f v = c->getPosition();
+  ki->members["x"] = PObjFromDouble(v.x);
+  ki->members["y"] = PObjFromDouble(v.y);
+  return PObjFromKlassInst(ki);
+}
+PltObject Rect__getGlobalBounds(PltObject* args,int n)
+{
+  if(n!=1)
+    return Plt_Err(ARGUMENT_ERROR,"1 argument needed!");
+  if(args[0].type != PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=rectclass)
+    return Plt_Err(TYPE_ERROR,"self must be an instance of Rectangle class!");
+  KlassInstance* k = (KlassInstance*)args[0].ptr;
+  sf::RectangleShape* c = (sf::RectangleShape*)k->members[".handle"].ptr;
+  KlassInstance* ki = vm_allocKlassInstance();
+  ki->klass = floatrectclass;
+  ki->members = floatrectclass->members;
+  sf::FloatRect v = c->getGlobalBounds();
+  ki->members["width"] = PObjFromDouble(v.width);
+  ki->members["height"] = PObjFromDouble(v.height);
+  ki->members["left"] = PObjFromDouble(v.left);
+  ki->members["top"] = PObjFromDouble(v.top);
+  return PObjFromKlassInst(ki);
+}
+PltObject Rect__setOutlineThickness(PltObject* args,int n)
+{
+  if(n!=2)
+  {
+    return Plt_Err(ARGUMENT_ERROR,"Three arguments needed!");
+    
+  }
+  if(args[0].type != PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=rectclass)
+  {
+    return Plt_Err(TYPE_ERROR,"self must be an instance of Rectangle class!");
+    
+  }
+  if(args[1].type!=PLT_FLOAT)
+  {
+    return Plt_Err(TYPE_ERROR,"Argument 1 must be a float!");
+    
+  }
+  KlassInstance* k = (KlassInstance*)args[0].ptr;
+  sf::RectangleShape* c = (sf::RectangleShape*)k->members[".handle"].ptr;
+  c->setOutlineThickness(args[1].f); 
+}
 PltObject Rect__setfillcolor(PltObject* args,int n)
 {
   if(n!=2)
@@ -389,6 +628,20 @@ PltObject Rect__setfillcolor(PltObject* args,int n)
   sf::RectangleShape* c = (sf::RectangleShape*)k->members[".handle"].ptr;
   sf::Color* color = (sf::Color*)j->members[".handle"].ptr;
   c->setFillColor(*color);
+}
+PltObject Rect__setOutlineColor(PltObject* args,int n)
+{
+  if(n!=2)
+    return Plt_Err(ARGUMENT_ERROR,"Two arguments needed!");
+  if(args[0].type != PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=rectclass)
+    return Plt_Err(TYPE_ERROR,"Argument 1(self) must be an instance of Rectangle class!");
+  if(args[1].type!=PLT_OBJ || ((KlassInstance*)args[1].ptr)->klass!=colorclass)
+    return Plt_Err(TYPE_ERROR,"Argument 2 must be an instance of class Color!");
+  KlassInstance* k = (KlassInstance*)args[0].ptr;
+  KlassInstance* j = (KlassInstance*)args[1].ptr;
+  sf::RectangleShape* c = (sf::RectangleShape*)k->members[".handle"].ptr;
+  sf::Color* color = (sf::Color*)j->members[".handle"].ptr;
+  c->setOutlineColor(*color);
 }
 PltObject Rect__del(PltObject* args,int n)
 {
@@ -441,4 +694,405 @@ PltObject Color__del(PltObject* args,int n)
   ki->members[".handle"] = nil;
   return nil;
 }
-//Rectangle
+//Clock
+PltObject Clock__construct(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=clockclass)
+      return Plt_Err(ARGUMENT_ERROR,"1 argument self needed which must be instance of Clock");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Clock* e = new sf::Clock;
+    k->members.emplace(".handle",PObjFromPtr(e));
+    return nil; //values returned by consructors are ignored anyway
+}
+PltObject Clock__restart(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=clockclass)
+      return Plt_Err(ARGUMENT_ERROR,"1 argument self needed which must be instance of Clock");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Clock* e = (sf::Clock*)k->members[".handle"].ptr;
+    sf::Time* t = new sf::Time(e->restart());
+    KlassInstance* ki = vm_allocKlassInstance();
+    ki->klass = timeclass;
+    ki->members = timeclass->members;
+    ki->members.emplace(".handle",PObjFromPtr(t));
+    return PObjFromKlassInst(ki);
+}
+PltObject Clock__del(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=clockclass)
+      return nil;
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    if(k->members[".handle"].type == PLT_NIL)
+      return nil;
+    sf::Clock* e = (sf::Clock*)k->members[".handle"].ptr;
+    delete e;
+    k->members[".handle"] = nil;
+}
+
+//Time
+PltObject Time__asSeconds(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=timeclass)
+      return Plt_Err(ARGUMENT_ERROR,"1 argument self needed which must be instance of Time");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Time* t = (sf::Time*)k->members[".handle"].ptr;
+   
+    return PObjFromDouble(t->asSeconds());
+}
+PltObject Time__del(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=timeclass)
+      return nil;
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    if(k->members[".handle"].type == PLT_NIL)
+      return nil;
+    sf::Time* t = (sf::Time*)k->members[".handle"].ptr;
+    delete t;
+    k->members[".handle"] = nil;
+    return nil;
+}
+//Texture
+PltObject Texture__construct(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=textureclass)
+      return Plt_Err(ARGUMENT_ERROR,"1 argument self needed which must be instance of Texture");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Texture* e = new sf::Texture;
+    k->members.emplace(".handle",PObjFromPtr(e));
+    return nil; //values returned by consructors are ignored anyway
+}
+PltObject Texture__loadFromFile(PltObject* args,int n)
+{
+    if(n!=2)
+      return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=textureclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1 must be instance of Texture");
+    if(args[1].type != PLT_STR)
+      return Plt_Err(TYPE_ERROR,"Argument 2 must be a string!");
+    string& fname = *(string*)args[1].ptr;
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Texture* f = (sf::Texture*)k->members[".handle"].ptr;
+    f->loadFromFile(fname);
+    return nil;
+}
+PltObject Texture__del(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=textureclass)
+      return nil;
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    if(k->members[".handle"].type == PLT_NIL)
+      return nil;
+    sf::Texture* e = (sf::Texture*)k->members[".handle"].ptr;
+   // delete e;
+    return nil; //values returned by consructors are ignored anyway
+}
+//VertexArray
+PltObject VertexArray__construct(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=vaclass)
+      return Plt_Err(ARGUMENT_ERROR,"1 argument self needed which must be instance of VertexArray");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::VertexArray* e = new sf::VertexArray;
+    k->members.emplace(".handle",PObjFromPtr(e));
+    return nil; //values returned by consructors are ignored anyway
+}
+PltObject VertexArray__setPrimType(PltObject* args,int n)
+{
+    if(n!=2)
+      return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=vaclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1  must be instance of VertexArray");
+    if(args[1].type != PLT_INT)
+      return Plt_Err(TYPE_ERROR,"Argument 2 must be an integer!");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::VertexArray* va = (sf::VertexArray*)k->members[".handle"].ptr;
+    va->setPrimitiveType((sf::PrimitiveType)args[1].i);
+    return nil;
+}
+PltObject VertexArray__resize(PltObject* args,int n)
+{
+    if(n!=2)
+      return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=vaclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1  must be instance of VertexArray");
+    if(args[1].type != PLT_INT)
+      return Plt_Err(TYPE_ERROR,"Argument 2 must be an integer!");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::VertexArray* va = (sf::VertexArray*)k->members[".handle"].ptr;
+    va->resize(args[1].i);
+    return nil;
+}
+PltObject VertexArray__setKth(PltObject* args,int n)
+{
+    if(n!=4)
+      return Plt_Err(ARGUMENT_ERROR,"3 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=vaclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1  must be instance of VertexArray");
+    if(args[1].type!=PLT_INT)
+      return Plt_Err(TYPE_ERROR,"Argument 1 must be an integer!");
+    if(args[2].type!=PLT_FLOAT || args[3].type!=PLT_FLOAT)
+      return Plt_Err(TYPE_ERROR,"Argument 3 and 4 must be floats!");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::VertexArray* va = (sf::VertexArray*)k->members[".handle"].ptr;
+    (*va)[args[1].i].position = sf::Vector2f(args[2].f,args[3].f);
+    return nil;
+}
+PltObject VertexArray__del(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=vaclass)
+      return nil;
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    if(k->members["handle"].type == PLT_NIL)
+      return nil;
+    sf::VertexArray* e = (sf::VertexArray*)k->members[".handle"].ptr;
+    delete e;
+}
+//Font
+PltObject Font__construct(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=fontclass)
+      return Plt_Err(ARGUMENT_ERROR,"1 argument self needed which must be instance of Font");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Font* e = new sf::Font;
+    k->members.emplace(".handle",PObjFromPtr(e));
+    return nil; //values returned by consructors are ignored anyway
+}
+PltObject Font__loadFromFile(PltObject* args,int n)
+{
+    if(n!=2)
+      return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=fontclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1 must be instance of Font");
+    if(args[1].type != PLT_STR)
+      return Plt_Err(TYPE_ERROR,"Argument 2 must be a string!");
+    string& fname = *(string*)args[1].ptr;
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Font* f = (sf::Font*)k->members[".handle"].ptr;
+    f->loadFromFile(fname);
+    return nil;
+}
+PltObject Font__del(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=fontclass)
+      return nil;
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    if(k->members[".handle"].type == PLT_NIL)
+      return nil;
+    sf::Font* e = (sf::Font*)k->members[".handle"].ptr;
+   // delete e; //Deleting this was causing SegFault
+   //even tho no illegal memory access was made by Plutonium
+   //Prolly a SFML thing
+    return nil; //values returned by consructors are ignored anyway
+}
+//Text
+PltObject Text__construct(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=textclass)
+      return Plt_Err(ARGUMENT_ERROR,"1 argument self needed which must be instance of Text");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    auto e = new sf::Text;
+    k->members.emplace(".handle",PObjFromPtr(e));
+    return nil; //values returned by consructors are ignored anyway
+}
+PltObject Text__setCharacterSize(PltObject* args,int n)
+{
+    if(n!=2)
+      return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=textclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1 must be instance of Text");
+    if(args[1].type != PLT_INT)
+      return Plt_Err(TYPE_ERROR,"Argument 2 must be an integer!");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Text* t = (sf::Text*)k->members[".handle"].ptr;
+    t->setCharacterSize(args[1].i);
+    return nil;
+}
+PltObject Text__setPostion(PltObject* args,int n)
+{
+    if(n!=3)
+      return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=textclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1 must be instance of Text");
+    if(args[1].type != PLT_FLOAT || args[2].type!=PLT_FLOAT)
+      return Plt_Err(TYPE_ERROR,"Argument 2 and 3 must be an floats!");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Text* t = (sf::Text*)k->members[".handle"].ptr;
+    t->setPosition(sf::Vector2f(args[1].f,args[2].f));
+    return nil;
+}
+PltObject Text__setString(PltObject* args,int n)
+{
+    if(n!=2)
+      return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=textclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1 must be instance of Text");
+    if(args[1].type != PLT_STR)
+      return Plt_Err(TYPE_ERROR,"Argument 2 must be a string!");
+    string& str = *(string*)args[1].ptr;
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Text* t = (sf::Text*)k->members[".handle"].ptr;
+    t->setString(str);
+    return nil;
+}
+PltObject Text__setFont(PltObject* args,int n)
+{
+    if(n!=2)
+      return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=textclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1 must be instance of Text");
+    if(args[1].type != PLT_OBJ || ((KlassInstance*)args[1].ptr)->klass!=fontclass)
+      return Plt_Err(TYPE_ERROR,"Argument 2 must be an instance of Font!");
+    KlassInstance* k1 = (KlassInstance*)args[1].ptr;
+    sf::Font* f = (sf::Font*)k1->members[".handle"].ptr;  
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Text* t = (sf::Text*)k->members[".handle"].ptr;
+    t->setFont(*(sf::Font*)k1->members[".handle"].ptr);
+    vm_markImportant(k1);
+    return nil;
+}
+PltObject Text__setFillColor(PltObject* args,int n)
+{
+    if(n!=2)
+      return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=textclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1 must be instance of Text");
+    if(args[1].type != PLT_OBJ || ((KlassInstance*)args[1].ptr)->klass!=colorclass)
+      return Plt_Err(TYPE_ERROR,"Argument 2 must be an instance of Color!");
+    KlassInstance* k1 = (KlassInstance*)args[1].ptr;
+    sf::Color* f = (sf::Color*)k1->members[".handle"].ptr;  
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Text* t = (sf::Text*)k->members[".handle"].ptr;
+    t->setFillColor(*f);
+    vm_markImportant(k1);
+    return nil;
+}
+PltObject Text__del(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=textclass)
+      return nil;
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    if(k->members[".handle"].type == PLT_NIL)
+      return nil;
+    sf::Text* e = (sf::Text*)k->members[".handle"].ptr;
+    delete e;
+    return nil; 
+}
+//Music
+PltObject Music__construct(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=musicclass)
+      return Plt_Err(ARGUMENT_ERROR,"1 argument self needed which must be instance of Music");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    auto e = new sf::Music;
+    k->members.emplace(".handle",PObjFromPtr(e));
+    return nil; //values returned by consructors are ignored anyway
+}
+PltObject Music__setLoop(PltObject* args,int n)
+{
+    if(n!=2)
+      return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=musicclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1 must be instance of Music");
+    if(args[1].type != PLT_BOOL)
+      return Plt_Err(TYPE_ERROR,"Argument 2 must be an integer!");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Music* t = (sf::Music*)k->members[".handle"].ptr;
+    t->setLoop(args[1].i);
+    return nil;
+}
+PltObject Music__openFromFile(PltObject* args,int n)
+{
+    if(n!=2)
+      return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=musicclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1 must be instance of Music");
+    if(args[1].type != PLT_STR)
+      return Plt_Err(TYPE_ERROR,"Argument 2 must be a string!");
+    string& str = *(string*)args[1].ptr;
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Music* t = (sf::Music*)k->members[".handle"].ptr;
+    t->openFromFile(str);
+    return nil;
+}
+PltObject Music__play(PltObject* args,int n)
+{
+    if(n!=1)
+      return Plt_Err(ARGUMENT_ERROR,"1 argument needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=musicclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1 must be instance of Text");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Music* t = (sf::Music*)k->members[".handle"].ptr;
+    t->play();
+    return nil;
+}
+PltObject Music__del(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=musicclass)
+      return nil;
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    if(k->members[".handle"].type == PLT_NIL)
+      return nil;
+    sf::Music* e = (sf::Music*)k->members[".handle"].ptr;
+    delete e;
+    return nil; 
+}
+//Sprite
+PltObject Sprite__construct(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=spriteclass)
+      return Plt_Err(ARGUMENT_ERROR,"1 argument self needed which must be instance of Sprite");
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    auto e = new sf::Sprite;
+    k->members.emplace(".handle",PObjFromPtr(e));
+    return nil; //values returned by consructors are ignored anyway
+}
+PltObject Sprite__setTexture(PltObject* args,int n)
+{
+    if(n!=2)
+      return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=spriteclass)
+      return Plt_Err(TYPE_ERROR,"Argument 1 must be instance of Sprite");
+    if(args[1].type != PLT_OBJ || ((KlassInstance*)args[1].ptr)->klass!=textureclass)
+      return Plt_Err(TYPE_ERROR,"Argument 2 must be an instance of Texture!");
+    KlassInstance* k1 = (KlassInstance*)args[1].ptr;
+    sf::Texture* f = (sf::Texture*)k1->members[".handle"].ptr;  
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    sf::Sprite* t = (sf::Sprite*)k->members[".handle"].ptr;
+    t->setTexture(*(sf::Texture*)k1->members[".handle"].ptr);
+    vm_markImportant(k1);
+    return nil;
+}
+PltObject Sprite__del(PltObject* args,int n)
+{
+    if(n!=1 || args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=spriteclass)
+      return nil;
+    KlassInstance* k = (KlassInstance*)args[0].ptr;
+    if(k->members[".handle"].type == PLT_NIL)
+      return nil;
+    sf::Sprite* e = (sf::Sprite*)k->members[".handle"].ptr;
+    delete e;
+    return nil; 
+}
+//FloatRect
+PltObject FloatRect__intersects(PltObject* args,int n)
+{
+  if(n!=2)
+    return Plt_Err(ARGUMENT_ERROR,"2 arguments required");
+  if(args[0].type != PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass!=floatrectclass)
+    return Plt_Err(TYPE_ERROR,"Argument 1 must be an instance of FloatRect");
+  if(args[1].type != PLT_OBJ || ((KlassInstance*)args[1].ptr)->klass!=floatrectclass)
+    return Plt_Err(TYPE_ERROR,"Argument 2 must be an instance of FloatRect");
+  KlassInstance* k1 = (KlassInstance*)args[0].ptr;
+  KlassInstance* k2 = (KlassInstance*)args[1].ptr;
+  sf::FloatRect v1;
+  sf::FloatRect v2;
+  v1.width = (float)k1->members["width"].f;
+  v1.height = (float)k1->members["height"].f;
+  v1.left = (float)k1->members["left"].f;
+  v1.top = (float)k1->members["top"].f;
+  v2.width = (float)k2->members["width"].f;
+  v2.height = (float)k2->members["height"].f;
+  v2.left = (float)k2->members["left"].f;
+  v2.top = (float)k2->members["top"].f;
+  return PObjFromBool(v1.intersects(v2));
+}

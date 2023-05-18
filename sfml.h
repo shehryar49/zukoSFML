@@ -4,6 +4,7 @@
 extern "C"
 {
     PltObject init();
+    PltObject getMousePosition(PltObject*,int);
     
     //RenderWindow methods
     PltObject RenderWindow__construct(PltObject*,int);
@@ -11,6 +12,7 @@ extern "C"
     PltObject RenderWindow__clear(PltObject*,int);
     PltObject RenderWindow__display(PltObject*,int);
     PltObject RenderWindow__pollevent(PltObject*,int);
+    PltObject RenderWindow__setFrameRateLimit(PltObject*,int);
     PltObject RenderWindow__close(PltObject*,int);
 
     //Circle Methods
@@ -25,10 +27,56 @@ extern "C"
     //Rectangle Methods
     PltObject  Rect__construct(PltObject*,int);
     PltObject  Rect__setfillcolor(PltObject*,int);
+    PltObject  Rect__setOutlineColor(PltObject*,int);
+    PltObject  Rect__setOutlineThickness(PltObject*,int);
     PltObject  Rect__setpos(PltObject*,int);
+    PltObject Rect__getPosition(PltObject*,int);
+    PltObject Rect__getGlobalBounds(PltObject*,int);
+    PltObject  Rect__setSize(PltObject*,int);
     PltObject  Rect__del(PltObject*,int);
     //Event Methods
     PltObject  Event__construct(PltObject*,int);
     PltObject  Event__del(PltObject*,int);
+    //Texture Methods
+    PltObject  Texture__construct(PltObject*,int);
+    PltObject  Texture__loadFromFile(PltObject*,int);
+    PltObject  Texture__del(PltObject*,int);
+    //Sprite Methods
+    PltObject  Sprite__construct(PltObject*,int);
+    PltObject  Sprite__setTexture(PltObject*,int);
+    PltObject  Sprite__del(PltObject*,int);
+    //Clock Methods
+    PltObject  Clock__construct(PltObject*,int);
+    PltObject  Clock__restart(PltObject*,int);
+    PltObject  Clock__del(PltObject*,int);
+    //Time Methods
+    PltObject Time__asSeconds(PltObject*,int);
+    PltObject Time__del(PltObject*,int);
+    //VertexArray Methods
+    PltObject  VertexArray__construct(PltObject*,int);
+    PltObject  VertexArray__setKth(PltObject*,int);
+    PltObject  VertexArray__resize(PltObject*,int);
+    PltObject  VertexArray__setPrimType(PltObject*,int);
+    PltObject  VertexArray__del(PltObject*,int);
+    //Font Methods
+    PltObject  Font__construct(PltObject*,int);
+    PltObject  Font__loadFromFile(PltObject*,int);
+    PltObject  Font__del(PltObject*,int);
+    //Text Methods
+    PltObject  Text__construct(PltObject*,int);
+    PltObject  Text__setString(PltObject*,int);
+    PltObject  Text__setPostion(PltObject*,int);
+    PltObject  Text__setCharacterSize(PltObject*,int);
+    PltObject  Text__setFont(PltObject*,int);
+    PltObject  Text__setFillColor(PltObject*,int);
+    PltObject  Text__del(PltObject*,int);
+    //Music Methods
+    PltObject  Music__construct(PltObject*,int);
+    PltObject  Music__setLoop(PltObject*,int);
+    PltObject  Music__openFromFile(PltObject*,int);
+    PltObject  Music__play(PltObject*,int);
+    PltObject  Music__del(PltObject*,int);
+    //FloatRect Methods
+    PltObject FloatRect__intersects(PltObject*,int);
 }
 #endif
