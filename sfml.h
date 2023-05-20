@@ -1,82 +1,78 @@
 #ifndef PLTSFML_H_
 #define PLTSFML_H_
-#include "PltObject.h"
+#include "C:\\plutonium\\PltObject.h"
+#define EXPORT __declspec(dllexport)
 extern "C"
 {
-    PltObject init();
-    PltObject getMousePosition(PltObject*,int);
-    
+    EXPORT PltObject init();
+    EXPORT PltObject getMousePosition(PltObject*, int);
+
     //RenderWindow methods
-    PltObject RenderWindow__construct(PltObject*,int);
-    PltObject RenderWindow__draw(PltObject*,int);
-    PltObject RenderWindow__clear(PltObject*,int);
-    PltObject RenderWindow__display(PltObject*,int);
-    PltObject RenderWindow__pollevent(PltObject*,int);
-    PltObject RenderWindow__setFrameRateLimit(PltObject*,int);
-    PltObject RenderWindow__close(PltObject*,int);
+    EXPORT PltObject RenderWindow__construct(PltObject*, int);
+    EXPORT PltObject RenderWindow__draw(PltObject*, int);
+    EXPORT PltObject RenderWindow__clear(PltObject*, int);
+    EXPORT PltObject RenderWindow__display(PltObject*, int);
+    EXPORT PltObject RenderWindow__pollevent(PltObject*, int);
+    EXPORT PltObject RenderWindow__setFrameRateLimit(PltObject*, int);
+    EXPORT PltObject RenderWindow__close(PltObject*, int);
 
     //Circle Methods
-    PltObject Circle__construct(PltObject*,int);
-    PltObject Circle__setpointcount(PltObject*,int);
-    PltObject Circle__setfillcolor(PltObject*,int);
-    PltObject  Circle__setpos(PltObject*,int);
-    PltObject Circle__del(PltObject*,int);
+    EXPORT PltObject Circle__construct(PltObject*, int);
+    EXPORT PltObject Circle__setpointcount(PltObject*, int);
+    EXPORT PltObject Circle__setfillcolor(PltObject*, int);
+    EXPORT PltObject  Circle__setpos(PltObject*, int);
+    EXPORT PltObject Circle__del(PltObject*, int);
     //Color methods
-    PltObject  Color__construct(PltObject*,int);
-    PltObject Color__del(PltObject*,int);
+    EXPORT PltObject  Color__construct(PltObject*, int);
+    EXPORT PltObject Color__del(PltObject*, int);
     //Rectangle Methods
-    PltObject  Rect__construct(PltObject*,int);
-    PltObject  Rect__setfillcolor(PltObject*,int);
-    PltObject  Rect__setOutlineColor(PltObject*,int);
-    PltObject  Rect__setOutlineThickness(PltObject*,int);
-    PltObject  Rect__setpos(PltObject*,int);
-    PltObject Rect__getPosition(PltObject*,int);
-    PltObject Rect__getGlobalBounds(PltObject*,int);
-    PltObject  Rect__setSize(PltObject*,int);
-    PltObject  Rect__del(PltObject*,int);
+    EXPORT PltObject  Rect__construct(PltObject*, int);
+    EXPORT PltObject  Rect__setfillcolor(PltObject*, int);
+    EXPORT PltObject  Rect__setOutlineColor(PltObject*, int);
+    EXPORT PltObject  Rect__setOutlineThickness(PltObject*, int);
+    EXPORT PltObject  Rect__setpos(PltObject*, int);
+    EXPORT PltObject Rect__getPosition(PltObject*, int);
+    EXPORT PltObject Rect__getGlobalBounds(PltObject*, int);
+    EXPORT PltObject  Rect__setSize(PltObject*, int);
+    EXPORT PltObject  Rect__del(PltObject*, int);
     //Event Methods
-    PltObject  Event__construct(PltObject*,int);
-    PltObject  Event__del(PltObject*,int);
+    EXPORT PltObject  Event__construct(PltObject*, int);
+    EXPORT PltObject  Event__del(PltObject*, int);
     //Texture Methods
-    PltObject  Texture__construct(PltObject*,int);
-    PltObject  Texture__loadFromFile(PltObject*,int);
-    PltObject  Texture__del(PltObject*,int);
+    EXPORT PltObject  Texture__construct(PltObject*, int);
+    EXPORT PltObject  Texture__loadFromFile(PltObject*, int);
+    EXPORT PltObject  Texture__del(PltObject*, int);
     //Sprite Methods
-    PltObject  Sprite__construct(PltObject*,int);
-    PltObject  Sprite__setTexture(PltObject*,int);
-    PltObject  Sprite__del(PltObject*,int);
+    EXPORT PltObject  Sprite__construct(PltObject*, int);
+    EXPORT PltObject  Sprite__setTexture(PltObject*, int);
+    EXPORT PltObject  Sprite__del(PltObject*, int);
     //Clock Methods
-    PltObject  Clock__construct(PltObject*,int);
-    PltObject  Clock__restart(PltObject*,int);
-    PltObject  Clock__del(PltObject*,int);
+    EXPORT PltObject  Clock__construct(PltObject*, int);
+    EXPORT PltObject  Clock__restart(PltObject*, int);
+    EXPORT PltObject  Clock__del(PltObject*, int);
     //Time Methods
-    PltObject Time__asSeconds(PltObject*,int);
-    PltObject Time__del(PltObject*,int);
+    EXPORT PltObject Time__asSeconds(PltObject*, int);
+    EXPORT PltObject Time__del(PltObject*, int);
     //VertexArray Methods
-    PltObject  VertexArray__construct(PltObject*,int);
-    PltObject  VertexArray__setKth(PltObject*,int);
-    PltObject  VertexArray__resize(PltObject*,int);
-    PltObject  VertexArray__setPrimType(PltObject*,int);
-    PltObject  VertexArray__del(PltObject*,int);
+    EXPORT PltObject  VertexArray__construct(PltObject*, int);
+    EXPORT PltObject  VertexArray__setKth(PltObject*, int);
+    EXPORT PltObject  VertexArray__resize(PltObject*, int);
+    EXPORT PltObject  VertexArray__setPrimType(PltObject*, int);
+    EXPORT PltObject  VertexArray__del(PltObject*, int);
     //Font Methods
-    PltObject  Font__construct(PltObject*,int);
-    PltObject  Font__loadFromFile(PltObject*,int);
-    PltObject  Font__del(PltObject*,int);
+    EXPORT PltObject  Font__construct(PltObject*, int);
+    EXPORT PltObject  Font__loadFromFile(PltObject*, int);
+    EXPORT PltObject  Font__del(PltObject*, int);
     //Text Methods
-    PltObject  Text__construct(PltObject*,int);
-    PltObject  Text__setString(PltObject*,int);
-    PltObject  Text__setPostion(PltObject*,int);
-    PltObject  Text__setCharacterSize(PltObject*,int);
-    PltObject  Text__setFont(PltObject*,int);
-    PltObject  Text__setFillColor(PltObject*,int);
-    PltObject  Text__del(PltObject*,int);
-    //Music Methods
-    PltObject  Music__construct(PltObject*,int);
-    PltObject  Music__setLoop(PltObject*,int);
-    PltObject  Music__openFromFile(PltObject*,int);
-    PltObject  Music__play(PltObject*,int);
-    PltObject  Music__del(PltObject*,int);
+    EXPORT PltObject  Text__construct(PltObject*, int);
+    EXPORT PltObject  Text__setString(PltObject*, int);
+    EXPORT PltObject  Text__setPostion(PltObject*, int);
+    EXPORT PltObject  Text__setCharacterSize(PltObject*, int);
+    EXPORT PltObject  Text__setFont(PltObject*, int);
+    EXPORT PltObject  Text__setFillColor(PltObject*, int);
+    EXPORT PltObject  Text__del(PltObject*, int);
+  
     //FloatRect Methods
-    PltObject FloatRect__intersects(PltObject*,int);
+    EXPORT PltObject FloatRect__intersects(PltObject*, int);
 }
 #endif
