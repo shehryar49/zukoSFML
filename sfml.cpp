@@ -1,4 +1,3 @@
-#include "pch.h"
 #define SFML_STATIC
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Text.hpp>
