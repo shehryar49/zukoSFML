@@ -219,7 +219,7 @@ PltObject RenderWindow__clear(PltObject* args,int n)
     {
         return Plt_Err(ARGUMENT_ERROR,"1 or 2 arguments needed!");
     }
-    if(args[0].type!=PLT_OBJ && ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
     {
         return Plt_Err(TYPE_ERROR,"self must be an instance of RenderWindow");
         
@@ -241,7 +241,7 @@ PltObject RenderWindow__close(PltObject* args,int n)
 {
     if(n!=1)
         return Plt_Err(ARGUMENT_ERROR,"1 argument needed!");
-    if(args[0].type!=PLT_OBJ && ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
         return Plt_Err(TYPE_ERROR,"self must be an instance of RenderWindow");
     KlassInstance* k = (KlassInstance*)args[0].ptr;
     sf::RenderWindow* w = (sf::RenderWindow*)k->members[".handle"].ptr;
@@ -256,7 +256,7 @@ PltObject RenderWindow__display(PltObject* args,int n)
         return Plt_Err(ARGUMENT_ERROR,"1 argument needed!");
         
     }
-    if(args[0].type!=PLT_OBJ && ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
     {
         return Plt_Err(TYPE_ERROR,"self must be an instance of RenderWindow");
         
@@ -272,7 +272,7 @@ PltObject RenderWindow__draw(PltObject* args,int n)
         return Plt_Err(ARGUMENT_ERROR,"2 arguments needed!");
         
     }
-    if(args[0].type!=PLT_OBJ && ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
     {
         return Plt_Err(TYPE_ERROR,"self must be an instance of RenderWindow");
         
@@ -322,7 +322,7 @@ PltObject RenderWindow__pollevent(PltObject* args,int n)
         return Plt_Err(ARGUMENT_ERROR,"2 argument needed!");
         
     }
-    if(args[0].type!=PLT_OBJ && ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
     {
         return Plt_Err(TYPE_ERROR,"self must be an instance of RenderWindow");
         
@@ -358,7 +358,7 @@ PltObject RenderWindow__setFrameRateLimit(PltObject* args,int n)
 {
     if(n!=2)
         return Plt_Err(ARGUMENT_ERROR,"2 argument needed!");
-    if(args[0].type!=PLT_OBJ && ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
+    if(args[0].type!=PLT_OBJ || ((KlassInstance*)args[0].ptr)->klass != renderwinclass)
         return Plt_Err(TYPE_ERROR,"self must be an instance of RenderWindow");
     if(args[1].type!=PLT_INT)
         return Plt_Err(TYPE_ERROR,"Argument 2  must be an integer.");
