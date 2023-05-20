@@ -1,7 +1,12 @@
 #ifndef PLTSFML_H_
 #define PLTSFML_H_
 #include "C:\\plutonium\\PltObject.h"
+#ifdef _WIN32
 #define EXPORT __declspec(dllexport)
+#else
+#define EXPORT
+#endif
+
 extern "C"
 {
     EXPORT PltObject init();
