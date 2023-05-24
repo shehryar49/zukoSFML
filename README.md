@@ -25,7 +25,7 @@ This is a sfml module for plutonium programming language.
  # Classes
  The module provides following classes:
  - RenderWindow
-   - __consturct__(width,height,title)
+   - \_\_consturct\_\_(width,height,title)
    - display()
    - clear(color = Black)
    - pollEvent(eventObject)
@@ -33,18 +33,18 @@ This is a sfml module for plutonium programming language.
    - close
    - setFramerateLimit(x)
  - Event
-   - __construct__()
+   - \_\_construct\_\_()
    - type
-   - __del__
+   - \_\_del\_\_()
    - Other members are added to object(based on the type of event) when you pollEvent
  - Circle
-   - __construct__(radius)
+   - \_\_construct\_\_(radius)
    - setPosition(x,y)
    - setFillColor(color)
    - setPointCount(n)
-   - __del__()
+   - \_\_del\_\_()
  - Rectangle
-   - __construct__(width,height)
+   - \_\_construct\_\_(width,height)
    - setSize(width,height)
    - setPosition(x,y)
    - setFillColor(color)
@@ -52,40 +52,40 @@ This is a sfml module for plutonium programming language.
    - setOutlineThickness(x)
    - getPosition()
    - getGlobalBounds()
-   - __del__()
+   - \_\_del\_\_()
  - VertexArray
-   - __construct__()
+   - \_\_construct\_\_()
    - resize(n)
    - setPrimitiveType(type)
    - setKth(x,y)
-   - __del__()
+   - \_\_del\_\_()
  - Sprite
-   - __construct__()
+   - \_\_construct\_\_()
    - setTexture(texture)
-   - __del__()
+   - \_\_del\_\_()
  - Texture
-   - __construct__()
+   - \_\_construct\_\_()
    - loadFromFile(filename)
-   - __del__()
+   - \_\_del\_\_()
  - Font
-   - __construct__()
+   - \_\_construct\_\_()
    - loadFromFile(filename)
-   - __del__()
+   - \_\_del\_\_()
  - Text
-   - __construct__()
+   - \_\_construct\_\_()
    - setFont(font)
    - setCharacterSize(n)
    - setPosition(x,y)
    - setString(str)
    - setFillColor(color)
-   - __del__()
+   - \_\_del\_\_()
  - Vector2f
    - x
    - y
  - Clock
-   - __construct__()
+   - \_\_construct\_\_()
    - restart()
-   - __del__()
+   - \_\_del\_\_()
  - Time
    - asSeconds()
  # Naming Conventions
