@@ -22,7 +22,15 @@ This is a sfml module for plutonium programming language.
    
  You need to copy the resultant shared library or DLL to plutonium's modules folder(C:\plutonium\modules for Windows
   and /opt/plutonium/modules for Linux)
- 
+ # Classes
+ - RenderWindow
+ - Circle
+ - Rectangle
+ - Sprite
+ - Texture
+ - Font
+ - Vector2f
+ - Time
  # Naming Conventions
  | C++   | Plutonium |
  | ----- | --------- |
