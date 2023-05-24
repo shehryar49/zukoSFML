@@ -30,7 +30,7 @@ This is a sfml module for plutonium programming language.
    - clear(color = Black)
    - pollEvent(eventObject)
    - draw(drawableObj)
-   - close
+   - close()
    - setFramerateLimit(x)
  - Event
    - \_\_construct\_\_()
