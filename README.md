@@ -3,7 +3,6 @@ SFML binding for Plutonium Programming Language
 
 This is a sfml module for plutonium programming language.
 
-Note: This module is not complete.It includes very basic things like windows,events,circles,rectangles,colors and rotation.
 
 # HOW TO COMPILE
 -----------------
