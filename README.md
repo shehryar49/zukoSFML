@@ -25,15 +25,69 @@ This is a sfml module for plutonium programming language.
  # Classes
  The module provides following classes:
  - RenderWindow
+   - __consturct__(width,height,title)
+   - display()
+   - clear(color = Black)
+   - pollEvent(eventObject)
+   - draw(drawableObj)
+   - close
+   - setFramerateLimit(x)
  - Event
+   - __construct__()
+   - type
+   - __del__
+   - Other members are added to object(based on the type of event) when you pollEvent
  - Circle
+   - __construct__(radius)
+   - setPosition(x,y)
+   - setFillColor(color)
+   - setPointCount(n)
+   - __del__()
  - Rectangle
+   - __construct__(width,height)
+   - setSize(width,height)
+   - setPosition(x,y)
+   - setFillColor(color)
+   - setOutlineColor(color)
+   - setOutlineThickness(x)
+   - getPosition()
+   - getGlobalBounds()
+   - __del__()
  - VertexArray
+   - __construct__()
+   - resize(n)
+   - setPrimitiveType(type)
+   - setKth(x,y)
+   - __del__()
  - Sprite
+   - __construct__()
+   - setTexture(texture)
+   - __del__()
  - Texture
+   - __construct__()
+   - loadFromFile(filename)
+   - __del__()
  - Font
+   - __construct__()
+   - loadFromFile(filename)
+   - __del__()
+ - Text
+   - __construct__()
+   - setFont(font)
+   - setCharacterSize(n)
+   - setPosition(x,y)
+   - setString(str)
+   - setFillColor(color)
+   - __del__()
  - Vector2f
+   - x
+   - y
+ - Clock
+   - __construct__()
+   - restart()
+   - __del__()
  - Time
+   - asSeconds()
  # Naming Conventions
  | C++   | Plutonium |
  | ----- | --------- |
