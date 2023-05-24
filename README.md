@@ -24,8 +24,10 @@ This is a sfml module for plutonium programming language.
   and /opt/plutonium/modules for Linux)
  # Classes
  - RenderWindow
+ - Event
  - Circle
  - Rectangle
+ - VertexArray
  - Sprite
  - Texture
  - Font
