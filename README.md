@@ -6,16 +6,18 @@ This is a sfml module for plutonium programming language.
 
 # HOW TO COMPILE
 -----------------
- Compile as a shared library on linux or dll on Windows
+ Compile as a shared library on linux or dll on Windows.
+ Note: You must install plutonium first on your system.
  
  ## For linux Use command: 
  
    ```g++ -shared sfml.cpp -o sfml.so -lsfml-graphics-s -lsfml-system-s -lsfml-window-s -fPIC```
    
    or don't link statically it's your choice
- ## For Windows:
-   Create a dll project and add sfml.h and sfml.cpp as sources to this project. Make sure all functions are exported
-   correctly using __declspec(dllexport)
+ ## For Windows Visual Studio:
+   Create a dll project and add sfml.h and sfml.cpp as sources to this project. Set Runtime Library to Multithreaded in Project Options->C++->Code Generation
+   
+   Make sure to build in release mode. These are the options used to build plutonium interpreter. Use these options otherwise the generated DLL might not work with the interpreter
    
    Link sfml libraries to the project,compile and enjoy :)
    
