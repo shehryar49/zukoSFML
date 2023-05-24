@@ -1,9 +1,10 @@
 #ifndef PLTSFML_H_
 #define PLTSFML_H_
-#include "C:\\plutonium\\PltObject.h"
 #ifdef _WIN32
+#include "C:\\plutonium\\PltObject.h"
 #define EXPORT __declspec(dllexport)
 #else
+#include "/opt/plutonium/PltObject.h
 #define EXPORT
 #endif
 
