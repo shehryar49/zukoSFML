@@ -37,6 +37,9 @@ This is a sfml module for plutonium programming language.
    - type
    - \_\_del\_\_()
    - Other members are added to object(based on the type of event) when you pollEvent
+ - Color
+   - \_\_construct\_\_(r,g,b)
+   - \_\_del\_\_()
  - Circle
    - \_\_construct\_\_(radius)
    - setPosition(x,y)
@@ -82,6 +85,12 @@ This is a sfml module for plutonium programming language.
  - Vector2f
    - x
    - y
+ - FloatRect
+   - width
+   - height
+   - top
+   - left
+   - intersects(FloatRectObj)
  - Clock
    - \_\_construct\_\_()
    - restart()
