@@ -2,26 +2,21 @@
 SFML binding for Plutonium Programming Language
 
 This is a sfml module for plutonium programming language.
-
+# INSTALLATION
+  Use fiza package manager to install this module. Plutonium must be already installed.
+  ## Windows
+    ``` cd C:\plutonium ```
+    ``` plutonium fiza.plt install sfml ```
+  ## Linux
+    Make sure you have libsfml-dev installed before running the following command.
+    ``` fiza instll sfml ```
 
 # HOW TO COMPILE
 -----------------
- Compile as a shared library on linux or dll on Windows.
+ If you want to compile from source(perhaps to contribute or test) then run cmake directly.
  Note: You must install plutonium first on your system.
  
- ## For linux Use command: 
- 
    ```cmake . -DCMAKE_BUILD_TYPE=Release```
-   
-   or don't link statically it's your choice
- ## For Windows Visual Studio:
-   Create a dll project and add sfml.h and sfml.cpp as sources to this project. Set Runtime Library to Multithreaded in Project Options->C++->Code Generation
-   
-   Make sure to build in release mode. These are the options used to build plutonium interpreter. Use these options otherwise the generated DLL might not work with the interpreter
-   
-   Link sfml libraries to the project,compile and enjoy :)
-   
-   
  You need to copy the resultant shared library or DLL to plutonium's modules folder(C:\plutonium\modules for Windows
   and /opt/plutonium/modules for Linux)
  # Classes
