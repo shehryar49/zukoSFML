@@ -11,7 +11,7 @@ This is a sfml module for plutonium programming language.
  
  ## For linux Use command: 
  
-   ```g++ -shared sfml.cpp -o sfml.so -lsfml-graphics-s -lsfml-system-s -lsfml-window-s -fPIC```
+   ```cmake . -DCMAKE_BUILD_TYPE=Release```
    
    or don't link statically it's your choice
  ## For Windows Visual Studio:
