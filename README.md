@@ -5,11 +5,13 @@ This is a sfml module for plutonium programming language.
 # INSTALLATION
   Use fiza package manager to install this module. Plutonium must be already installed.
   ## Windows
-    ``` cd C:\plutonium ```
-    ``` plutonium fiza.plt install sfml ```
+    ``` cd C:\plutonium
+    ```plutonium fiza.plt install sfml ```
+  
   ## Linux
-    Make sure you have libsfml-dev installed before running the following command.
-    ``` fiza instll sfml ```
+  Make sure you have libsfml-dev installed before running the following command.
+    
+    ```fiza instll sfml ```
 
 # HOW TO COMPILE
 -----------------
