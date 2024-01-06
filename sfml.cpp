@@ -23,104 +23,105 @@ ZObject init()
     // Initialize classes
     renderwinclass = vm_allocKlass();
     renderwinclass->name = "RenderWindow";
-    renderwinclass->members.emplace("__construct__", ZObjFromMethod("__construct__", &RenderWindow__construct, renderwinclass));
-    renderwinclass->members.emplace("clear", ZObjFromMethod("clear", &RenderWindow__clear, renderwinclass));
-    renderwinclass->members.emplace("draw", ZObjFromMethod("draw", &RenderWindow__draw, renderwinclass));
-    renderwinclass->members.emplace("display", ZObjFromMethod("display", &RenderWindow__display, renderwinclass));
-    renderwinclass->members.emplace("pollEvent", ZObjFromMethod("pollEvent", &RenderWindow__pollevent, renderwinclass));
-    renderwinclass->members.emplace("setFramerateLimit", ZObjFromMethod("setFramerateLimit", &RenderWindow__setFrameRateLimit, renderwinclass));
-    renderwinclass->members.emplace("close", ZObjFromMethod("close", &RenderWindow__close, renderwinclass));
+    Klass_addNativeMethod(renderwinclass,"__construct__", &RenderWindow__construct);
+    Klass_addNativeMethod(renderwinclass,"clear",&RenderWindow__clear);
+    Klass_addNativeMethod(renderwinclass,"draw",&RenderWindow__draw);
+    Klass_addNativeMethod(renderwinclass,"display",&RenderWindow__display);
+    Klass_addNativeMethod(renderwinclass,"pollEvent",&RenderWindow__pollevent);
+    Klass_addNativeMethod(renderwinclass,"setFramerateLimit", &RenderWindow__setFrameRateLimit);
+    Klass_addNativeMethod(renderwinclass,"close",&RenderWindow__close);
 
     circleclass = vm_allocKlass();
     circleclass->name = "Circle";
-    circleclass->members.emplace("__construct__", ZObjFromMethod("__construct__", &Circle__construct, circleclass));
-    circleclass->members.emplace("setPosition", ZObjFromMethod("setPosition", &Circle__setpos, circleclass));
-    circleclass->members.emplace("setFillColor", ZObjFromMethod("setFillColor", &Circle__setfillcolor, circleclass));
-    circleclass->members.emplace("setPointCount", ZObjFromMethod("setPointCount", &Circle__setpointcount, circleclass));
-    circleclass->members.emplace("__del__", ZObjFromMethod("__del__", &Circle__del, circleclass));
+    Klass_addNativeMethod(circleclass,"__construct__",&Circle__construct);
+    Klass_addNativeMethod(circleclass,"setPosition",&Circle__setpos);
+    Klass_addNativeMethod(circleclass,"setFillColor",&Circle__setfillcolor);
+    Klass_addNativeMethod(circleclass,"setPointCount",&Circle__setpointcount);
+    Klass_addNativeMethod(circleclass,"__del__",&Circle__del);
+  
     colorclass = vm_allocKlass();
     colorclass->name = "Color";
-    colorclass->members.emplace("__construct__", ZObjFromMethod("__construct__", &Color__construct, colorclass));
-    colorclass->members.emplace("__del__", ZObjFromMethod("__del__", &Color__del, colorclass));
+    Klass_addNativeMethod(colorclass,"__construct__",&Color__construct);
+    Klass_addNativeMethod(colorclass,"__del__",&Color__del);
 
     rectclass = vm_allocKlass();
     rectclass->name = "Rectangle";
-    rectclass->members.emplace("__construct__", ZObjFromMethod("__construct__", &Rect__construct, rectclass));
-    rectclass->members.emplace("setPosition", ZObjFromMethod("setPosition", &Rect__setpos, rectclass));
-    rectclass->members.emplace("setFillColor", ZObjFromMethod("setFillColor", &Rect__setfillcolor, rectclass));
-    rectclass->members.emplace("setOutlineColor", ZObjFromMethod("setOutlineColor", &Rect__setOutlineColor, rectclass));
-    rectclass->members.emplace("setOutlineThickness", ZObjFromMethod("setOutlineThickness", &Rect__setOutlineThickness, rectclass));
-    rectclass->members.emplace("setPosition", ZObjFromMethod("setPosition", &Rect__setpos, rectclass));
-    rectclass->members.emplace("getPosition", ZObjFromMethod("getPosition", &Rect__getPosition, rectclass));
-    rectclass->members.emplace("getGlobalBounds", ZObjFromMethod("getGlobalBounds", &Rect__getGlobalBounds, rectclass));
-    rectclass->members.emplace("setSize", ZObjFromMethod("setSize", &Rect__setSize, rectclass));
+    Klass_addNativeMethod(rectclass,"__construct__",&Rect__construct);
+    Klass_addNativeMethod(rectclass,"setPosition", &Rect__setpos);
+    Klass_addNativeMethod(rectclass,"setFillColor", &Rect__setfillcolor);
+    Klass_addNativeMethod(rectclass,"setOutlineColor", &Rect__setOutlineColor);
+    Klass_addNativeMethod(rectclass,"setOutlineThickness",&Rect__setOutlineThickness);
+    Klass_addNativeMethod(rectclass,"setPosition",&Rect__setpos);
+    Klass_addNativeMethod(rectclass,"getPosition",&Rect__getPosition);
+    Klass_addNativeMethod(rectclass,"getGlobalBounds",&Rect__getGlobalBounds);
+    Klass_addNativeMethod(rectclass,"setSize",&Rect__setSize);
 
     evclass = vm_allocKlass();
     evclass->name = "Event";
-    evclass->members.emplace("__construct__", ZObjFromMethod("__construct__", &Event__construct, evclass));
-    evclass->members.emplace("__del__", ZObjFromMethod("__del__", &Event__del, evclass));
-    evclass->members.emplace("type", nil);
-    evclass->members.emplace("keycode", nil);
+    Klass_addNativeMethod(evclass,"__construct__",&Event__construct);
+    Klass_addNativeMethod(evclass,"__del__",&Event__del);
+    Klass_addMember(evclass,"type", nil);
+    Klass_addMember(evclass,"keycode", nil);
 
     textureclass = vm_allocKlass();
     textureclass->name = "Texture";
-    textureclass->members.emplace("__construct__", ZObjFromMethod("__construct__", &Texture__construct, textureclass));
-    textureclass->members.emplace("loadFromFile", ZObjFromMethod("loadFromFile", &Texture__loadFromFile, textureclass));
-    textureclass->members.emplace("__del__", ZObjFromMethod("__del__", &Texture__del, textureclass));
+    Klass_addNativeMethod(textureclass,"__construct__", &Texture__construct);
+    Klass_addNativeMethod(textureclass,"loadFromFile", &Texture__loadFromFile);
+    Klass_addNativeMethod(textureclass,"__del__", &Texture__del);
 
     clockclass = vm_allocKlass();
     clockclass->name = "Clock";
-    clockclass->members.emplace("__construct__", ZObjFromMethod("__construct__", &Clock__construct, clockclass));
-    clockclass->members.emplace("restart", ZObjFromMethod("restart", &Clock__restart, clockclass));
-    clockclass->members.emplace("__del__", ZObjFromMethod("__del__", &Clock__del, clockclass));
+    Klass_addNativeMethod(clockclass,"__construct__", &Clock__construct);
+    Klass_addNativeMethod(clockclass,"restart", &Clock__restart);
+    Klass_addNativeMethod(clockclass,"__del__", &Clock__del);
 
     vaclass = vm_allocKlass();
     vaclass->name = "VertexArray";
-    vaclass->members.emplace("__construct__", ZObjFromMethod("__construct__", &VertexArray__construct, vaclass));
-    vaclass->members.emplace("resize", ZObjFromMethod("resize", &VertexArray__resize, vaclass));
-    vaclass->members.emplace("setPrimitiveType", ZObjFromMethod("setPrimitiveType", &VertexArray__setPrimType, vaclass));
-    vaclass->members.emplace("setKth", ZObjFromMethod("setKth", &VertexArray__setKth, vaclass));
-    vaclass->members.emplace("__del__", ZObjFromMethod("__del__", &VertexArray__del, vaclass));
+    Klass_addNativeMethod(vaclass,"__construct__", &VertexArray__construct);
+    Klass_addNativeMethod(vaclass,"resize", &VertexArray__resize);
+    Klass_addNativeMethod(vaclass,"setPrimitiveType", &VertexArray__setPrimType);
+    Klass_addNativeMethod(vaclass,"setKth", &VertexArray__setKth);
+    Klass_addNativeMethod(vaclass,"__del__", &VertexArray__del);
 
     fontclass = vm_allocKlass();
     fontclass->name = "Font";
-    fontclass->members.emplace("__construct__", ZObjFromMethod("__construct__", &Font__construct, fontclass));
-    fontclass->members.emplace("loadFromFile", ZObjFromMethod("loadFromFile", &Font__loadFromFile, fontclass));
-    fontclass->members.emplace("__del__", ZObjFromMethod("__del__", &Font__del, fontclass));
+    Klass_addNativeMethod(fontclass,"__construct__", &Font__construct);
+    Klass_addNativeMethod(fontclass,"loadFromFile", &Font__loadFromFile);
+    Klass_addNativeMethod(fontclass,"__del__", &Font__del);
 
     spriteclass = vm_allocKlass();
     spriteclass->name = "Sprite";
-    spriteclass->members.emplace("__construct__", ZObjFromMethod("__construct__", &Sprite__construct, spriteclass));
-    spriteclass->members.emplace("setTexture", ZObjFromMethod("setTexture", &Sprite__setTexture, spriteclass));
-    spriteclass->members.emplace("__del__", ZObjFromMethod("__del__", &Sprite__del, spriteclass));
+    Klass_addNativeMethod(spriteclass,"__construct__", &Sprite__construct);
+    Klass_addNativeMethod(spriteclass,"setTexture", &Sprite__setTexture);
+    Klass_addNativeMethod(spriteclass,"__del__", &Sprite__del);
 
     textclass = vm_allocKlass();
     textclass->name = "Text";
-    textclass->members.emplace("__construct__", ZObjFromMethod("__construct__", &Text__construct, textclass));
-    textclass->members.emplace("setCharacterSize", ZObjFromMethod("setCharacterSize", &Text__setCharacterSize, textclass));
-    textclass->members.emplace("setString", ZObjFromMethod("setString", &Text__setString, textclass));
-    textclass->members.emplace("setPosition", ZObjFromMethod("setPosition", &Text__setPostion, textclass));
-    textclass->members.emplace("setFont", ZObjFromMethod("setFont", &Text__setFont, textclass));
-    textclass->members.emplace("setFillColor", ZObjFromMethod("setFillColor", &Text__setFillColor, textclass));
-    textclass->members.emplace("__del__", ZObjFromMethod("__del__", &Text__del, textclass));
+    Klass_addNativeMethod(textclass,"__construct__", &Text__construct);
+    Klass_addNativeMethod(textclass,"setCharacterSize", &Text__setCharacterSize);
+    Klass_addNativeMethod(textclass,"setString", &Text__setString);
+    Klass_addNativeMethod(textclass,"setPosition", &Text__setPostion);
+    Klass_addNativeMethod(textclass,"setFont", &Text__setFont);
+    Klass_addNativeMethod(textclass,"setFillColor", &Text__setFillColor);
+    Klass_addNativeMethod(textclass,"__del__", &Text__del);
 
     timeclass = vm_allocKlass();
     timeclass->name = "Time";
-    timeclass->members.emplace("asSeconds", ZObjFromMethod("asSeconds", &Time__asSeconds, timeclass));
-    timeclass->members.emplace("__del__", ZObjFromMethod("__del__", &Time__del, timeclass));
+    Klass_addNativeMethod(timeclass,"asSeconds", &Time__asSeconds);
+    Klass_addNativeMethod(timeclass,"__del__", &Time__del);
 
     vector2fclass = vm_allocKlass();
     vector2fclass->name = "Vector2f";
-    vector2fclass->members.emplace("x", nil);
-    vector2fclass->members.emplace("y", nil);
+    Klass_addMember(vector2fclass,"x", nil);
+    Klass_addMember(vector2fclass,"y", nil);
 
     floatrectclass = vm_allocKlass();
     floatrectclass->name = "FloatRect";
-    floatrectclass->members.emplace("width", nil);
-    floatrectclass->members.emplace("height", nil);
-    floatrectclass->members.emplace("top", nil);
-    floatrectclass->members.emplace("left", nil);
-    floatrectclass->members.emplace("intersects", ZObjFromMethod("intersects", &FloatRect__intersects, floatrectclass));
+    Klass_addMember(floatrectclass,"width", nil);
+    Klass_addMember(floatrectclass,"height", nil);
+    Klass_addMember(floatrectclass,"top", nil);
+    Klass_addMember(floatrectclass,"left", nil);
+    Klass_addNativeMethod(floatrectclass,"intersects", &FloatRect__intersects);
 
     vm_markImportant(timeclass);
     vm_markImportant(vector2fclass);
@@ -129,39 +130,39 @@ ZObject init()
     // Add classes to module
     Module *sfml = vm_allocModule();
     sfml->name = "sfml";
-    sfml->members.emplace("RenderWindow", ZObjFromKlass(renderwinclass));
-    sfml->members.emplace("Circle", ZObjFromKlass(circleclass));
-    sfml->members.emplace("Color", ZObjFromKlass(colorclass));
-    sfml->members.emplace("Rectangle", ZObjFromKlass(rectclass));
-    sfml->members.emplace("Event", ZObjFromKlass(evclass));
-    sfml->members.emplace("Clock", ZObjFromKlass(clockclass));
-    sfml->members.emplace("VertexArray", ZObjFromKlass(vaclass));
-    sfml->members.emplace("Font", ZObjFromKlass(fontclass));
-    sfml->members.emplace("Text", ZObjFromKlass(textclass));
-    sfml->members.emplace("Texture", ZObjFromKlass(textureclass));
-    sfml->members.emplace("Sprite", ZObjFromKlass(spriteclass));
-    sfml->members.emplace("Vector2f", ZObjFromKlass(vector2fclass));
+    Module_addMember(sfml,"RenderWindow", ZObjFromKlass(renderwinclass));
+    Module_addMember(sfml,"Circle", ZObjFromKlass(circleclass));
+    Module_addMember(sfml,"Color", ZObjFromKlass(colorclass));
+    Module_addMember(sfml,"Rectangle", ZObjFromKlass(rectclass));
+    Module_addMember(sfml,"Event", ZObjFromKlass(evclass));
+    Module_addMember(sfml,"Clock", ZObjFromKlass(clockclass));
+    Module_addMember(sfml,"VertexArray", ZObjFromKlass(vaclass));
+    Module_addMember(sfml,"Font", ZObjFromKlass(fontclass));
+    Module_addMember(sfml,"Text", ZObjFromKlass(textclass));
+    Module_addMember(sfml,"Texture", ZObjFromKlass(textureclass));
+    Module_addMember(sfml,"Sprite", ZObjFromKlass(spriteclass));
+    Module_addMember(sfml,"Vector2f", ZObjFromKlass(vector2fclass));
 
-    sfml->members.emplace("getMousePosition", ZObjFromFunction("getMousePosition", &getMousePosition));
+    Module_addMember(sfml,"getMousePosition", ZObjFromFunction("getMousePosition", &getMousePosition));
 
-    sfml->members.emplace("EventClosed", ZObjFromInt(sf::Event::Closed));
-    sfml->members.emplace("EventKeyPressed", ZObjFromInt(sf::Event::KeyPressed));
-    sfml->members.emplace("EventMouseButtonPressed", ZObjFromInt(sf::Event::MouseButtonPressed));
-    sfml->members.emplace("EventMouseMoved", ZObjFromInt(sf::Event::MouseMoved));
-    sfml->members.emplace("KeyboardA", ZObjFromInt(sf::Keyboard::A));
-    sfml->members.emplace("KeyboardS", ZObjFromInt(sf::Keyboard::S));
-    sfml->members.emplace("KeyboardD", ZObjFromInt(sf::Keyboard::D));
-    sfml->members.emplace("KeyboardW", ZObjFromInt(sf::Keyboard::W));
-    sfml->members.emplace("KeyboardUp", ZObjFromInt(sf::Keyboard::Up));
-    sfml->members.emplace("KeyboardDown", ZObjFromInt(sf::Keyboard::Down));
-    sfml->members.emplace("KeyboardLeft", ZObjFromInt(sf::Keyboard::Left));
-    sfml->members.emplace("KeyboardRight", ZObjFromInt(sf::Keyboard::Right));
-    sfml->members.emplace("KeyboardEsc", ZObjFromInt(sf::Keyboard::Escape));
-    sfml->members.emplace("KeyboardEnter", ZObjFromInt(sf::Keyboard::Enter));
+    Module_addMember(sfml,"EventClosed", ZObjFromInt(sf::Event::Closed));
+    Module_addMember(sfml,"EventKeyPressed", ZObjFromInt(sf::Event::KeyPressed));
+    Module_addMember(sfml,"EventMouseButtonPressed", ZObjFromInt(sf::Event::MouseButtonPressed));
+    Module_addMember(sfml,"EventMouseMoved", ZObjFromInt(sf::Event::MouseMoved));
+    Module_addMember(sfml,"KeyboardA", ZObjFromInt(sf::Keyboard::A));
+    Module_addMember(sfml,"KeyboardS", ZObjFromInt(sf::Keyboard::S));
+    Module_addMember(sfml,"KeyboardD", ZObjFromInt(sf::Keyboard::D));
+    Module_addMember(sfml,"KeyboardW", ZObjFromInt(sf::Keyboard::W));
+    Module_addMember(sfml,"KeyboardUp", ZObjFromInt(sf::Keyboard::Up));
+    Module_addMember(sfml,"KeyboardDown", ZObjFromInt(sf::Keyboard::Down));
+    Module_addMember(sfml,"KeyboardLeft", ZObjFromInt(sf::Keyboard::Left));
+    Module_addMember(sfml,"KeyboardRight", ZObjFromInt(sf::Keyboard::Right));
+    Module_addMember(sfml,"KeyboardEsc", ZObjFromInt(sf::Keyboard::Escape));
+    Module_addMember(sfml,"KeyboardEnter", ZObjFromInt(sf::Keyboard::Enter));
     // More keymappings to be added later
 
-    sfml->members.emplace("LinesStrip", ZObjFromInt(sf::LinesStrip));
-    sfml->members.emplace("MouseLeft", ZObjFromInt(sf::Mouse::Left));
+    Module_addMember(sfml,"LinesStrip", ZObjFromInt(sf::LinesStrip));
+    Module_addMember(sfml,"MouseLeft", ZObjFromInt(sf::Mouse::Left));
 
     return ZObjFromModule(sfml);
 }
@@ -175,13 +176,13 @@ ZObject getMousePosition(ZObject *args, int n)
         return Z_Err(TypeError, "Argument 1 must be an instance of RenderWindow");
     }
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::RenderWindow *w = (sf::RenderWindow *)k->members[".handle"].ptr;
-    KlassObject *ki = vm_allocKlassObject();
-    ki->klass = vector2fclass;
-    ki->members = vector2fclass->members;
+    sf::RenderWindow *w = (sf::RenderWindow *)AS_PTR(KlassObj_getMember(k,".handle"));
+    KlassObject *ki = vm_allocKlassObject(vector2fclass);
     sf::Vector2i v = sf::Mouse::getPosition(*w);
-    ki->members["x"] = ZObjFromDouble(v.x);
-    ki->members["y"] = ZObjFromDouble(v.y);
+    
+    KlassObj_setMember(ki,"x",ZObjFromDouble(v.x));
+    KlassObj_setMember(ki,"y",ZObjFromDouble(v.y));
+    
     return ZObjFromKlassObj(ki);
 }
 // RenderWindow
@@ -193,10 +194,10 @@ ZObject RenderWindow__construct(ZObject *args, int n)
         return Z_Err(TypeError, "self must be an instance of RenderWindow");
     if (args[1].type != 'i' || args[2].type != 'i' || args[3].type != 's')
         return Z_Err(TypeError, "Invalid types of arguments!");
-    string &title = *((string *)args[3].ptr);
-    sf::RenderWindow *w = new sf::RenderWindow(sf::VideoMode(args[1].i, args[2].i), title);
+    ZStr* title = AS_STR(args[3]);
+    sf::RenderWindow *w = new sf::RenderWindow(sf::VideoMode(args[1].i, args[2].i), title->val);
     KlassObject *k = (KlassObject *)args[0].ptr;
-    k->members.emplace(".handle", ZObjFromPtr((void *)w)); // we use .handle so that user can't change it's value
+    KlassObj_setMember(k,".handle",ZObjFromPtr((void*)w));// we use .handle so that user can't change it's value
     return nil;                                            //
 }
 ZObject RenderWindow__clear(ZObject *args, int n)
@@ -215,11 +216,11 @@ ZObject RenderWindow__clear(ZObject *args, int n)
         if (args[1].type != Z_OBJ || ((KlassObject *)args[1].ptr)->klass != colorclass)
             return Z_Err(TypeError, "Argument 2 must be an instance of Color");
         KlassObject *ki = (KlassObject *)args[1].ptr;
-        sf::Color *color = (sf::Color *)ki->members[".handle"].ptr;
+        sf::Color *color = (sf::Color *)AS_PTR(KlassObj_getMember(ki,".handle"));
         c = *color;
     }
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::RenderWindow *w = (sf::RenderWindow *)k->members[".handle"].ptr;
+    sf::RenderWindow *w = (sf::RenderWindow *)AS_PTR(KlassObj_getMember(k,".handle"));
     w->clear(c);
     return nil;
 }
@@ -230,10 +231,10 @@ ZObject RenderWindow__close(ZObject *args, int n)
     if (args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != renderwinclass)
         return Z_Err(TypeError, "self must be an instance of RenderWindow");
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::RenderWindow *w = (sf::RenderWindow *)k->members[".handle"].ptr;
+    sf::RenderWindow *w = (sf::RenderWindow *)AS_PTR(KlassObj_getMember(k,".handle"));
     w->close();
     delete w;
-    k->members[".handle"] = nil;
+    KlassObj_setMember(k,".handle",nil);
     return nil;
 }
 ZObject RenderWindow__display(ZObject *args, int n)
@@ -247,7 +248,7 @@ ZObject RenderWindow__display(ZObject *args, int n)
         return Z_Err(TypeError, "self must be an instance of RenderWindow");
     }
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::RenderWindow *w = (sf::RenderWindow *)k->members[".handle"].ptr;
+    sf::RenderWindow *w = (sf::RenderWindow *)AS_PTR(KlassObj_getMember(k,".handle"));;
     w->display();
     return nil;
 }
@@ -268,30 +269,30 @@ ZObject RenderWindow__draw(ZObject *args, int n)
     KlassObject *obj = (KlassObject *)args[1].ptr;
 
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::RenderWindow *w = (sf::RenderWindow *)k->members[".handle"].ptr;
+    sf::RenderWindow *w = (sf::RenderWindow *)AS_PTR(KlassObj_getMember(k,".handle"));;
     if (obj->klass == circleclass)
     {
-        sf::CircleShape *d = (sf::CircleShape *)obj->members[".handle"].ptr;
+        sf::CircleShape *d = (sf::CircleShape *)AS_PTR(KlassObj_getMember(obj,".handle"));;
         w->draw(*d);
     }
     else if (obj->klass == rectclass)
     {
-        sf::RectangleShape *d = (sf::RectangleShape *)obj->members[".handle"].ptr;
+        sf::RectangleShape *d = (sf::RectangleShape *)AS_PTR(KlassObj_getMember(obj,".handle"));;
         w->draw(*d);
     }
     else if (obj->klass == spriteclass)
     {
-        sf::Sprite *d = (sf::Sprite *)obj->members[".handle"].ptr;
+        sf::Sprite *d = (sf::Sprite *)AS_PTR(KlassObj_getMember(obj,".handle"));
         w->draw(*d);
     }
     else if (obj->klass == textclass)
     {
-        sf::Text *d = (sf::Text *)obj->members[".handle"].ptr;
+        sf::Text *d = (sf::Text *)AS_PTR(KlassObj_getMember(obj,".handle"));
         w->draw(*d);
     }
     else if (obj->klass == vaclass)
     {
-        sf::VertexArray *d = (sf::VertexArray *)obj->members[".handle"].ptr;
+        sf::VertexArray *d = (sf::VertexArray *)AS_PTR(KlassObj_getMember(obj,".handle"));
         w->draw(*d);
     }
     else
@@ -318,16 +319,16 @@ ZObject RenderWindow__pollevent(ZObject *args, int n)
         return Z_Err(TypeError, "Argument must be an instance of Event class.");
     }
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::RenderWindow *w = (sf::RenderWindow *)k->members[".handle"].ptr;
-    sf::Event *e = (sf::Event *)obj->members[".handle"].ptr;
+    sf::RenderWindow *w = (sf::RenderWindow *)AS_PTR(KlassObj_getMember(k,".handle"));;
+    sf::Event *e = (sf::Event *)AS_PTR(KlassObj_getMember(obj,".handle"));;
     bool b = w->pollEvent(*e);
     if (b)
     {
-        obj->members["type"] = ZObjFromInt(e->type);
+        KlassObj_setMember(obj,"type",ZObjFromInt(e->type));
         if (e->type == sf::Event::KeyPressed)
-            obj->members["keycode"] = ZObjFromInt(e->key.code);
+            KlassObj_setMember(obj,"keycode",ZObjFromInt(e->key.code));
         if (e->type == sf::Event::MouseButtonPressed)
-            obj->members.emplace("mouseButton", ZObjFromInt(e->mouseButton.button));
+            KlassObj_setMember(obj,"mouseButton",ZObjFromInt(e->mouseButton.button));
     }
     return ZObjFromBool(b);
 }
@@ -340,7 +341,7 @@ ZObject RenderWindow__setFrameRateLimit(ZObject *args, int n)
     if (args[1].type != Z_INT)
         return Z_Err(TypeError, "Argument 2  must be an integer.");
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::RenderWindow *w = (sf::RenderWindow *)k->members[".handle"].ptr;
+    sf::RenderWindow *w = (sf::RenderWindow *)AS_PTR(KlassObj_getMember(k,".handle"));;
     w->setFramerateLimit(args[1].i);
     return nil;
 }
@@ -354,7 +355,7 @@ ZObject Event__construct(ZObject *args, int n)
     }
     KlassObject *k = (KlassObject *)args[0].ptr;
     sf::Event *e = new sf::Event;
-    k->members.emplace(".handle", ZObjFromPtr(e));
+    KlassObj_setMember(k,".handle",ZObjFromPtr(e));
     return nil;
 }
 ZObject Event__del(ZObject *args, int n)
@@ -364,11 +365,12 @@ ZObject Event__del(ZObject *args, int n)
     if (args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != evclass)
         return nil;
     KlassObject *ki = (KlassObject *)args[0].ptr;
-    if (ki->members[".handle"].type == Z_NIL)
+    ZObject ptr = KlassObj_getMember(ki,".handle");
+    if (ptr.type == Z_NIL)
         return nil;
-    sf::Event *ev = (sf::Event *)ki->members[".handle"].ptr;
+    sf::Event *ev = (sf::Event *)ptr.ptr;
     delete ev;
-    ki->members[".handle"] = nil;
+    KlassObj_setMember(ki,".handle",nil);
     return nil;
 }
 // Circle
@@ -393,7 +395,8 @@ ZObject Circle__construct(ZObject *args, int n)
     }
     KlassObject *k = (KlassObject *)args[0].ptr;
     sf::CircleShape *c = new sf::CircleShape(radius);
-    k->members.emplace(".handle", ZObjFromPtr(c));
+    KlassObj_setMember(k,".handle", ZObjFromPtr(c));
+    
     return nil;
 }
 ZObject Circle__setpos(ZObject *args, int n)
@@ -413,7 +416,7 @@ ZObject Circle__setpos(ZObject *args, int n)
     }
 
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::CircleShape *c = (sf::CircleShape *)k->members[".handle"].ptr;
+    sf::CircleShape *c = (sf::CircleShape *)AS_PTR(KlassObj_getMember(k,".handle"));
     float x = (float)args[1].f;
     float y = (float)args[2].f;
     c->setPosition(x, y);
@@ -436,7 +439,7 @@ ZObject Circle__setpointcount(ZObject *args, int n)
     }
 
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::CircleShape *c = (sf::CircleShape *)k->members[".handle"].ptr;
+    sf::CircleShape *c = (sf::CircleShape *)AS_PTR(KlassObj_getMember(k,".handle"));
     if (args[1].type == Z_INT)
         c->setPointCount(args[1].i);
     else
@@ -453,8 +456,8 @@ ZObject Circle__setfillcolor(ZObject *args, int n)
         return Z_Err(TypeError, "Argument 2 must be an instance of class Color!");
     KlassObject *k = (KlassObject *)args[0].ptr;
     KlassObject *j = (KlassObject *)args[1].ptr;
-    sf::CircleShape *c = (sf::CircleShape *)k->members[".handle"].ptr;
-    sf::Color *color = (sf::Color *)j->members[".handle"].ptr;
+    sf::CircleShape *c = (sf::CircleShape *)AS_PTR(KlassObj_getMember(k,".handle"));
+    sf::Color *color = (sf::Color *)AS_PTR(KlassObj_getMember(j,".handle"));
     c->setFillColor(*color);
     return nil;
 }
@@ -465,11 +468,11 @@ ZObject Circle__del(ZObject *args, int n)
     if (args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != circleclass)
         return nil;
     KlassObject *ki = (KlassObject *)args[0].ptr;
-    if (ki->members[".handle"].type == Z_NIL)
+    if (KlassObj_getMember(ki,".handle").type == Z_NIL)
         return nil;
-    sf::CircleShape *circle = (sf::CircleShape *)ki->members[".handle"].ptr;
+    sf::CircleShape *circle = (sf::CircleShape *)AS_PTR(KlassObj_getMember(ki,".handle"));
     delete circle;
-    ki->members[".handle"] = nil;
+    KlassObj_setMember(ki,".handle",nil);
     return nil;
 }
 // Rectangle
@@ -488,7 +491,7 @@ ZObject Rect__construct(ZObject *args, int n)
 
     KlassObject *k = (KlassObject *)args[0].ptr;
     sf::RectangleShape *c = new sf::RectangleShape(sf::Vector2f(args[1].f, args[2].f));
-    k->members.emplace(".handle", ZObjFromPtr(c));
+    KlassObj_setMember(k,".handle", ZObjFromPtr(c));
     return nil;
 }
 ZObject Rect__setpos(ZObject *args, int n)
@@ -506,7 +509,7 @@ ZObject Rect__setpos(ZObject *args, int n)
         return Z_Err(TypeError, "Position coordinates must be floats!");
     }
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::RectangleShape *c = (sf::RectangleShape *)k->members[".handle"].ptr;
+    sf::RectangleShape *c = (sf::RectangleShape *)AS_PTR(KlassObj_getMember(k,".handle"));
     c->setPosition(args[1].f, args[2].f);
     return nil;
 }
@@ -525,7 +528,7 @@ ZObject Rect__setSize(ZObject *args, int n)
         return Z_Err(TypeError, "Size values must be floats!");
     }
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::RectangleShape *c = (sf::RectangleShape *)k->members[".handle"].ptr;
+    sf::RectangleShape *c = (sf::RectangleShape *)AS_PTR(KlassObj_getMember(k,".handle"));
     c->setSize(sf::Vector2f(args[1].f, args[2].f));
     return nil;
 }
@@ -536,13 +539,11 @@ ZObject Rect__getPosition(ZObject *args, int n)
     if (args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != rectclass)
         return Z_Err(TypeError, "self must be an instance of Rectangle class!");
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::RectangleShape *c = (sf::RectangleShape *)k->members[".handle"].ptr;
-    KlassObject *ki = vm_allocKlassObject();
-    ki->klass = vector2fclass;
-    ki->members = vector2fclass->members;
+    sf::RectangleShape *c = (sf::RectangleShape *)AS_PTR(KlassObj_getMember(k,".handle"));
+    KlassObject *ki = vm_allocKlassObject(vector2fclass);
     sf::Vector2f v = c->getPosition();
-    ki->members["x"] = ZObjFromDouble(v.x);
-    ki->members["y"] = ZObjFromDouble(v.y);
+    KlassObj_setMember(ki,"x",ZObjFromDouble(v.x));
+    KlassObj_setMember(ki,"y",ZObjFromDouble(v.y));
     return ZObjFromKlassObj(ki);
 }
 ZObject Rect__getGlobalBounds(ZObject *args, int n)
@@ -552,15 +553,15 @@ ZObject Rect__getGlobalBounds(ZObject *args, int n)
     if (args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != rectclass)
         return Z_Err(TypeError, "self must be an instance of Rectangle class!");
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::RectangleShape *c = (sf::RectangleShape *)k->members[".handle"].ptr;
-    KlassObject *ki = vm_allocKlassObject();
-    ki->klass = floatrectclass;
-    ki->members = floatrectclass->members;
+    sf::RectangleShape *c = (sf::RectangleShape *)AS_PTR(KlassObj_getMember(k,".handle"));
+    KlassObject *ki = vm_allocKlassObject(floatrectclass);
+
     sf::FloatRect v = c->getGlobalBounds();
-    ki->members["width"] = ZObjFromDouble(v.width);
-    ki->members["height"] = ZObjFromDouble(v.height);
-    ki->members["left"] = ZObjFromDouble(v.left);
-    ki->members["top"] = ZObjFromDouble(v.top);
+
+    KlassObj_setMember(ki,"width",ZObjFromDouble(v.width));
+    KlassObj_setMember(ki,"height",ZObjFromDouble(v.height));
+    KlassObj_setMember(ki,"left",ZObjFromDouble(v.left));
+    KlassObj_setMember(ki,"top",ZObjFromDouble(v.top));
     return ZObjFromKlassObj(ki);
 }
 ZObject Rect__setOutlineThickness(ZObject *args, int n)
@@ -578,7 +579,7 @@ ZObject Rect__setOutlineThickness(ZObject *args, int n)
         return Z_Err(TypeError, "Argument 1 must be a float!");
     }
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::RectangleShape *c = (sf::RectangleShape *)k->members[".handle"].ptr;
+    sf::RectangleShape *c = (sf::RectangleShape *)AS_PTR(KlassObj_getMember(k,".handle"));
     c->setOutlineThickness(args[1].f);
     return nil;
 }
@@ -592,8 +593,8 @@ ZObject Rect__setfillcolor(ZObject *args, int n)
         return Z_Err(TypeError, "Argument 2 must be an instance of class Color!");
     KlassObject *k = (KlassObject *)args[0].ptr;
     KlassObject *j = (KlassObject *)args[1].ptr;
-    sf::RectangleShape *c = (sf::RectangleShape *)k->members[".handle"].ptr;
-    sf::Color *color = (sf::Color *)j->members[".handle"].ptr;
+    sf::RectangleShape *c = (sf::RectangleShape *)AS_PTR(KlassObj_getMember(k,".handle"));
+    sf::Color *color = (sf::Color *)AS_PTR(KlassObj_getMember(j,".handle"));
     c->setFillColor(*color);
     return nil;
 }
@@ -607,8 +608,8 @@ ZObject Rect__setOutlineColor(ZObject *args, int n)
         return Z_Err(TypeError, "Argument 2 must be an instance of class Color!");
     KlassObject *k = (KlassObject *)args[0].ptr;
     KlassObject *j = (KlassObject *)args[1].ptr;
-    sf::RectangleShape *c = (sf::RectangleShape *)k->members[".handle"].ptr;
-    sf::Color *color = (sf::Color *)j->members[".handle"].ptr;
+    sf::RectangleShape *c = (sf::RectangleShape *)AS_PTR(KlassObj_getMember(k,".handle"));
+    sf::Color *color = (sf::Color *)AS_PTR(KlassObj_getMember(j,".handle"));
     c->setOutlineColor(*color);
     return nil;
 }
@@ -619,11 +620,11 @@ ZObject Rect__del(ZObject *args, int n)
     if (args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != rectclass)
         return nil;
     KlassObject *ki = (KlassObject *)args[0].ptr;
-    if (ki->members[".handle"].type == Z_NIL)
+    if (KlassObj_getMember(ki,".handle").type == Z_NIL)
         return nil;
-    sf::RectangleShape *rect = (sf::RectangleShape *)ki->members[".handle"].ptr;
+    sf::RectangleShape *rect = (sf::RectangleShape *)AS_PTR(KlassObj_getMember(ki,".handle"));
     delete rect;
-    ki->members[".handle"] = nil;
+    KlassObj_setMember(ki,".handle",nil);
     return nil;
 }
 // Color
@@ -643,7 +644,7 @@ ZObject Color__construct(ZObject *args, int n)
     }
     KlassObject *k = (KlassObject *)args[0].ptr;
     sf::Color *c = new sf::Color(args[1].i, args[2].i, args[3].i);
-    k->members.emplace(".handle", ZObjFromPtr(c));
+    KlassObj_setMember(k,".handle", ZObjFromPtr(c));
     return nil;
 }
 ZObject Color__del(ZObject *args, int n)
@@ -653,11 +654,11 @@ ZObject Color__del(ZObject *args, int n)
     if (args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != colorclass)
         return nil;
     KlassObject *ki = (KlassObject *)args[0].ptr;
-    if (ki->members[".handle"].type == Z_NIL)
+    if (KlassObj_getMember(ki,".handle").type == Z_NIL)
         return nil;
-    sf::Color *color = (sf::Color *)ki->members[".handle"].ptr;
+    sf::Color *color = (sf::Color *)AS_PTR(KlassObj_getMember(ki,".handle"));
     delete color;
-    ki->members[".handle"] = nil;
+    KlassObj_setMember(ki,".handle",nil);
     return nil;
 }
 // Clock
@@ -667,7 +668,7 @@ ZObject Clock__construct(ZObject *args, int n)
         return Z_Err(ArgumentError, "1 argument self needed which must be instance of Clock");
     KlassObject *k = (KlassObject *)args[0].ptr;
     sf::Clock *e = new sf::Clock;
-    k->members.emplace(".handle", ZObjFromPtr(e));
+    KlassObj_setMember(k,".handle", ZObjFromPtr(e));
     return nil; // values returned by consructors are ignored anyway
 }
 ZObject Clock__restart(ZObject *args, int n)
@@ -675,12 +676,10 @@ ZObject Clock__restart(ZObject *args, int n)
     if (n != 1 || args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != clockclass)
         return Z_Err(ArgumentError, "1 argument self needed which must be instance of Clock");
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::Clock *e = (sf::Clock *)k->members[".handle"].ptr;
+    sf::Clock *e = (sf::Clock *)AS_PTR(KlassObj_getMember(k,".handle"));
     sf::Time *t = new sf::Time(e->restart());
-    KlassObject *ki = vm_allocKlassObject();
-    ki->klass = timeclass;
-    ki->members = timeclass->members;
-    ki->members.emplace(".handle", ZObjFromPtr(t));
+    KlassObject *ki = vm_allocKlassObject(timeclass);
+    KlassObj_setMember(ki,".handle", ZObjFromPtr(t));
     return ZObjFromKlassObj(ki);
 }
 ZObject Clock__del(ZObject *args, int n)
@@ -688,11 +687,11 @@ ZObject Clock__del(ZObject *args, int n)
     if (n != 1 || args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != clockclass)
         return nil;
     KlassObject *k = (KlassObject *)args[0].ptr;
-    if (k->members[".handle"].type == Z_NIL)
+    if (KlassObj_getMember(k,".handle").type == Z_NIL)
         return nil;
-    sf::Clock *e = (sf::Clock *)k->members[".handle"].ptr;
+    sf::Clock *e = (sf::Clock *)AS_PTR(KlassObj_getMember(k,".handle"));
     delete e;
-    k->members[".handle"] = nil;
+    KlassObj_setMember(k,".handle",nil);
     return nil;
 }
 
@@ -702,7 +701,7 @@ ZObject Time__asSeconds(ZObject *args, int n)
     if (n != 1 || args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != timeclass)
         return Z_Err(ArgumentError, "1 argument self needed which must be instance of Time");
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::Time *t = (sf::Time *)k->members[".handle"].ptr;
+    sf::Time *t = (sf::Time *)AS_PTR(KlassObj_getMember(k,".handle"));
 
     return ZObjFromDouble(t->asSeconds());
 }
@@ -711,11 +710,11 @@ ZObject Time__del(ZObject *args, int n)
     if (n != 1 || args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != timeclass)
         return nil;
     KlassObject *k = (KlassObject *)args[0].ptr;
-    if (k->members[".handle"].type == Z_NIL)
+    if (KlassObj_getMember(k,".handle").type == Z_NIL)
         return nil;
-    sf::Time *t = (sf::Time *)k->members[".handle"].ptr;
+    sf::Time *t = (sf::Time *)AS_PTR(KlassObj_getMember(k,".handle"));
     delete t;
-    k->members[".handle"] = nil;
+    KlassObj_setMember(k,".handle",nil);
     return nil;
 }
 // Texture
@@ -725,7 +724,7 @@ ZObject Texture__construct(ZObject *args, int n)
         return Z_Err(ArgumentError, "1 argument self needed which must be instance of Texture");
     KlassObject *k = (KlassObject *)args[0].ptr;
     sf::Texture *e = new sf::Texture;
-    k->members.emplace(".handle", ZObjFromPtr(e));
+    KlassObj_setMember(k,".handle", ZObjFromPtr(e));
     return nil; // values returned by consructors are ignored anyway
 }
 ZObject Texture__loadFromFile(ZObject *args, int n)
@@ -736,10 +735,10 @@ ZObject Texture__loadFromFile(ZObject *args, int n)
         return Z_Err(TypeError, "Argument 1 must be instance of Texture");
     if (args[1].type != Z_STR)
         return Z_Err(TypeError, "Argument 2 must be a string!");
-    string &fname = *(string *)args[1].ptr;
+    auto fname = AS_STR(args[1]);
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::Texture *f = (sf::Texture *)k->members[".handle"].ptr;
-    f->loadFromFile(fname);
+    sf::Texture *f = (sf::Texture *)AS_PTR(KlassObj_getMember(k,".handle"));
+    f->loadFromFile(fname->val);
     return nil;
 }
 ZObject Texture__del(ZObject *args, int n)
@@ -747,9 +746,9 @@ ZObject Texture__del(ZObject *args, int n)
     if (n != 1 || args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != textureclass)
         return nil;
     KlassObject *k = (KlassObject *)args[0].ptr;
-    if (k->members[".handle"].type == Z_NIL)
+    if (KlassObj_getMember(k,".handle").type == Z_NIL)
         return nil;
-    sf::Texture *e = (sf::Texture *)k->members[".handle"].ptr;
+    sf::Texture *e = (sf::Texture *)AS_PTR(KlassObj_getMember(k,".handle"));
     // delete e;
     return nil; // values returned by consructors/destructors are ignored anyway
 }
@@ -760,7 +759,7 @@ ZObject VertexArray__construct(ZObject *args, int n)
         return Z_Err(ArgumentError, "1 argument self needed which must be instance of VertexArray");
     KlassObject *k = (KlassObject *)args[0].ptr;
     sf::VertexArray *e = new sf::VertexArray;
-    k->members.emplace(".handle", ZObjFromPtr(e));
+    KlassObj_setMember(k,".handle", ZObjFromPtr(e));
     return nil; // values returned by consructors are ignored anyway
 }
 ZObject VertexArray__setPrimType(ZObject *args, int n)
@@ -772,7 +771,7 @@ ZObject VertexArray__setPrimType(ZObject *args, int n)
     if (args[1].type != Z_INT)
         return Z_Err(TypeError, "Argument 2 must be an integer!");
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::VertexArray *va = (sf::VertexArray *)k->members[".handle"].ptr;
+    sf::VertexArray *va = (sf::VertexArray *)AS_PTR(KlassObj_getMember(k,".handle"));
     va->setPrimitiveType((sf::PrimitiveType)args[1].i);
     return nil;
 }
@@ -785,7 +784,7 @@ ZObject VertexArray__resize(ZObject *args, int n)
     if (args[1].type != Z_INT)
         return Z_Err(TypeError, "Argument 2 must be an integer!");
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::VertexArray *va = (sf::VertexArray *)k->members[".handle"].ptr;
+    sf::VertexArray *va = (sf::VertexArray *)AS_PTR(KlassObj_getMember(k,".handle"));
     va->resize(args[1].i);
     return nil;
 }
@@ -800,7 +799,7 @@ ZObject VertexArray__setKth(ZObject *args, int n)
     if (args[2].type != Z_FLOAT || args[3].type != Z_FLOAT)
         return Z_Err(TypeError, "Argument 3 and 4 must be floats!");
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::VertexArray *va = (sf::VertexArray *)k->members[".handle"].ptr;
+    sf::VertexArray *va = (sf::VertexArray *)AS_PTR(KlassObj_getMember(k,".handle"));
     (*va)[args[1].i].position = sf::Vector2f(args[2].f, args[3].f);
     return nil;
 }
@@ -809,9 +808,9 @@ ZObject VertexArray__del(ZObject *args, int n)
     if (n != 1 || args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != vaclass)
         return nil;
     KlassObject *k = (KlassObject *)args[0].ptr;
-    if (k->members["handle"].type == Z_NIL)
+    if (KlassObj_getMember(k,".handle").type == Z_NIL)
         return nil;
-    sf::VertexArray *e = (sf::VertexArray *)k->members[".handle"].ptr;
+    sf::VertexArray *e = (sf::VertexArray *)AS_PTR(KlassObj_getMember(k,".handle"));
     delete e;
     return nil;
 }
@@ -822,7 +821,7 @@ ZObject Font__construct(ZObject *args, int n)
         return Z_Err(ArgumentError, "1 argument self needed which must be instance of Font");
     KlassObject *k = (KlassObject *)args[0].ptr;
     sf::Font *e = new sf::Font;
-    k->members.emplace(".handle", ZObjFromPtr(e));
+    KlassObj_setMember(k,".handle", ZObjFromPtr(e));
     return nil; // values returned by consructors are ignored anyway
 }
 ZObject Font__loadFromFile(ZObject *args, int n)
@@ -833,10 +832,10 @@ ZObject Font__loadFromFile(ZObject *args, int n)
         return Z_Err(TypeError, "Argument 1 must be instance of Font");
     if (args[1].type != Z_STR)
         return Z_Err(TypeError, "Argument 2 must be a string!");
-    string &fname = *(string *)args[1].ptr;
+    auto fname = AS_STR(args[1]);
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::Font *f = (sf::Font *)k->members[".handle"].ptr;
-    f->loadFromFile(fname);
+    sf::Font *f = (sf::Font *)AS_PTR(KlassObj_getMember(k,".handle"));
+    f->loadFromFile(fname->val);
     return nil;
 }
 ZObject Font__del(ZObject *args, int n)
@@ -844,9 +843,9 @@ ZObject Font__del(ZObject *args, int n)
     if (n != 1 || args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != fontclass)
         return nil;
     KlassObject *k = (KlassObject *)args[0].ptr;
-    if (k->members[".handle"].type == Z_NIL)
+    if (KlassObj_getMember(k,".handle").type == Z_NIL)
         return nil;
-    sf::Font *e = (sf::Font *)k->members[".handle"].ptr;
+    sf::Font *e = (sf::Font *)AS_PTR(KlassObj_getMember(k,".handle"));
     // delete e; //Deleting this was causing SegFault
     // even tho no illegal memory access was made by Plutonium
     // Prolly a SFML thing
@@ -859,7 +858,7 @@ ZObject Text__construct(ZObject *args, int n)
         return Z_Err(ArgumentError, "1 argument self needed which must be instance of Text");
     KlassObject *k = (KlassObject *)args[0].ptr;
     auto e = new sf::Text;
-    k->members.emplace(".handle", ZObjFromPtr(e));
+    KlassObj_setMember(k,".handle", ZObjFromPtr(e));
     return nil; // values returned by consructors are ignored anyway
 }
 ZObject Text__setCharacterSize(ZObject *args, int n)
@@ -871,7 +870,7 @@ ZObject Text__setCharacterSize(ZObject *args, int n)
     if (args[1].type != Z_INT)
         return Z_Err(TypeError, "Argument 2 must be an integer!");
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::Text *t = (sf::Text *)k->members[".handle"].ptr;
+    sf::Text *t = (sf::Text *)AS_PTR(KlassObj_getMember(k,".handle"));
     t->setCharacterSize(args[1].i);
     return nil;
 }
@@ -884,7 +883,7 @@ ZObject Text__setPostion(ZObject *args, int n)
     if (args[1].type != Z_FLOAT || args[2].type != Z_FLOAT)
         return Z_Err(TypeError, "Argument 2 and 3 must be an floats!");
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::Text *t = (sf::Text *)k->members[".handle"].ptr;
+    sf::Text *t = (sf::Text *)AS_PTR(KlassObj_getMember(k,".handle"));
     t->setPosition(sf::Vector2f(args[1].f, args[2].f));
     return nil;
 }
@@ -896,10 +895,10 @@ ZObject Text__setString(ZObject *args, int n)
         return Z_Err(TypeError, "Argument 1 must be instance of Text");
     if (args[1].type != Z_STR)
         return Z_Err(TypeError, "Argument 2 must be a string!");
-    string &str = *(string *)args[1].ptr;
+    auto str = AS_STR(args[1]);
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::Text *t = (sf::Text *)k->members[".handle"].ptr;
-    t->setString(str);
+    sf::Text *t = (sf::Text *)AS_PTR(KlassObj_getMember(k,".handle"));
+    t->setString(str->val);
     return nil;
 }
 ZObject Text__setFont(ZObject *args, int n)
@@ -911,10 +910,10 @@ ZObject Text__setFont(ZObject *args, int n)
     if (args[1].type != Z_OBJ || ((KlassObject *)args[1].ptr)->klass != fontclass)
         return Z_Err(TypeError, "Argument 2 must be an instance of Font!");
     KlassObject *k1 = (KlassObject *)args[1].ptr;
-    sf::Font *f = (sf::Font *)k1->members[".handle"].ptr;
+    sf::Font *f = (sf::Font *)AS_PTR(KlassObj_getMember(k1,".handle"));
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::Text *t = (sf::Text *)k->members[".handle"].ptr;
-    t->setFont(*(sf::Font *)k1->members[".handle"].ptr);
+    sf::Text *t = (sf::Text *)AS_PTR(KlassObj_getMember(k,".handle"));
+    t->setFont(*(sf::Font *)AS_PTR(KlassObj_getMember(k1,".handle")));
     vm_markImportant(k1);
     return nil;
 }
@@ -927,9 +926,9 @@ ZObject Text__setFillColor(ZObject *args, int n)
     if (args[1].type != Z_OBJ || ((KlassObject *)args[1].ptr)->klass != colorclass)
         return Z_Err(TypeError, "Argument 2 must be an instance of Color!");
     KlassObject *k1 = (KlassObject *)args[1].ptr;
-    sf::Color *f = (sf::Color *)k1->members[".handle"].ptr;
+    sf::Color *f = (sf::Color *)AS_PTR(KlassObj_getMember(k1,".handle"));
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::Text *t = (sf::Text *)k->members[".handle"].ptr;
+    sf::Text *t = (sf::Text *)AS_PTR(KlassObj_getMember(k,".handle"));
     t->setFillColor(*f);
     vm_markImportant(k1);
     return nil;
@@ -939,9 +938,9 @@ ZObject Text__del(ZObject *args, int n)
     if (n != 1 || args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != textclass)
         return nil;
     KlassObject *k = (KlassObject *)args[0].ptr;
-    if (k->members[".handle"].type == Z_NIL)
+    if (KlassObj_getMember(k,".handle").type == Z_NIL)
         return nil;
-    sf::Text *e = (sf::Text *)k->members[".handle"].ptr;
+    sf::Text *e = (sf::Text *)AS_PTR(KlassObj_getMember(k,".handle"));
     delete e;
     return nil;
 }
@@ -953,7 +952,7 @@ ZObject Sprite__construct(ZObject *args, int n)
         return Z_Err(ArgumentError, "1 argument self needed which must be instance of Sprite");
     KlassObject *k = (KlassObject *)args[0].ptr;
     auto e = new sf::Sprite;
-    k->members.emplace(".handle", ZObjFromPtr(e));
+    KlassObj_setMember(k,".handle", ZObjFromPtr(e));
     return nil; // values returned by consructors are ignored anyway
 }
 ZObject Sprite__setTexture(ZObject *args, int n)
@@ -965,10 +964,10 @@ ZObject Sprite__setTexture(ZObject *args, int n)
     if (args[1].type != Z_OBJ || ((KlassObject *)args[1].ptr)->klass != textureclass)
         return Z_Err(TypeError, "Argument 2 must be an instance of Texture!");
     KlassObject *k1 = (KlassObject *)args[1].ptr;
-    sf::Texture *f = (sf::Texture *)k1->members[".handle"].ptr;
+    sf::Texture *f = (sf::Texture *)AS_PTR(KlassObj_getMember(k1,".handle"));
     KlassObject *k = (KlassObject *)args[0].ptr;
-    sf::Sprite *t = (sf::Sprite *)k->members[".handle"].ptr;
-    t->setTexture(*(sf::Texture *)k1->members[".handle"].ptr);
+    sf::Sprite *t = (sf::Sprite *)AS_PTR(KlassObj_getMember(k,".handle"));
+    t->setTexture(*(sf::Texture *)AS_PTR(KlassObj_getMember(k1,".handle")));
     vm_markImportant(k1);
     return nil;
 }
@@ -977,9 +976,9 @@ ZObject Sprite__del(ZObject *args, int n)
     if (n != 1 || args[0].type != Z_OBJ || ((KlassObject *)args[0].ptr)->klass != spriteclass)
         return nil;
     KlassObject *k = (KlassObject *)args[0].ptr;
-    if (k->members[".handle"].type == Z_NIL)
+    if (KlassObj_getMember(k,".handle").type == Z_NIL)
         return nil;
-    sf::Sprite *e = (sf::Sprite *)k->members[".handle"].ptr;
+    sf::Sprite *e = (sf::Sprite *)AS_PTR(KlassObj_getMember(k,".handle"));
     delete e;
     return nil;
 }
@@ -996,13 +995,15 @@ ZObject FloatRect__intersects(ZObject *args, int n)
     KlassObject *k2 = (KlassObject *)args[1].ptr;
     sf::FloatRect v1;
     sf::FloatRect v2;
-    v1.width = (float)k1->members["width"].f;
-    v1.height = (float)k1->members["height"].f;
-    v1.left = (float)k1->members["left"].f;
-    v1.top = (float)k1->members["top"].f;
-    v2.width = (float)k2->members["width"].f;
-    v2.height = (float)k2->members["height"].f;
-    v2.left = (float)k2->members["left"].f;
-    v2.top = (float)k2->members["top"].f;
+    v1.width = AS_DOUBLE(KlassObj_getMember(k1,"width"));
+    v1.height = AS_DOUBLE(KlassObj_getMember(k1,"height"));
+    v1.left = AS_DOUBLE(KlassObj_getMember(k1,"left"));
+    v1.top = AS_DOUBLE(KlassObj_getMember(k1,"top"));
+
+    v2.width = AS_DOUBLE(KlassObj_getMember(k2,"width"));
+    v2.height = AS_DOUBLE(KlassObj_getMember(k2,"height"));
+    v2.left = AS_DOUBLE(KlassObj_getMember(k2,"left"));
+    v2.top = AS_DOUBLE(KlassObj_getMember(k2,"top"));
+
     return ZObjFromBool(v1.intersects(v2));
 }
