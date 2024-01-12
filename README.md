@@ -1,12 +1,12 @@
-# pltSFML
-SFML binding for Plutonium Programming Language
+# zukoSFML
+SFML binding for Zuko Programming Language
 
-This is a sfml module for plutonium programming language.
+This is a sfml module for zuko programming language.
 # INSTALLATION
-  Use fiza package manager to install this module. Plutonium must be already installed.
+  Use fiza package manager to install this module. Zuko must be already installed.
   ## Windows
-    cd C:\plutonium
-    plutonium fiza.plt install sfml
+    cd C:\zuko
+    zuko fiza.zk install sfml
   
   ## Linux
   Make sure you have libsfml-dev installed before running the following command.
@@ -16,11 +16,11 @@ This is a sfml module for plutonium programming language.
 # HOW TO COMPILE
 -----------------
  If you want to compile from source(perhaps to contribute or test) then run cmake directly.
- Note: You must install plutonium first on your system.
+ Note: You must install zuko first on your system.
  
    ```cmake . -DCMAKE_BUILD_TYPE=Release```
- You need to copy the resultant shared library or DLL to plutonium's modules folder(C:\plutonium\modules for Windows
-  and /opt/plutonium/modules for Linux)
+ You need to copy the resultant shared library or DLL to zuko's modules folder(C:\zuko\modules for Windows
+  and /opt/zuko/modules for Linux)
  # Classes
  The module provides following classes:
  - RenderWindow
